@@ -43,11 +43,13 @@ The set of reserved words is the set of terminals appearing in the grammar. Thos
 The reserved words used in Normal are the following: \\
 
 \begin{tabular}{lll}
-{\reserved{Bool}} &{\reserved{Nat}} &{\reserved{else}} \\
-{\reserved{false}} &{\reserved{fun}} &{\reserved{if}} \\
-{\reserved{in}} &{\reserved{iszero}} &{\reserved{let}} \\
+{\reserved{Bool}} &{\reserved{Nat}} &{\reserved{as}} \\
+{\reserved{cons}} &{\reserved{else}} &{\reserved{false}} \\
+{\reserved{fix}} &{\reserved{fun}} &{\reserved{head}} \\
+{\reserved{if}} &{\reserved{in}} &{\reserved{isempty}} \\
+{\reserved{iszero}} &{\reserved{let}} &{\reserved{match}} \\
 {\reserved{pred}} &{\reserved{return}} &{\reserved{succ}} \\
-{\reserved{then}} &{\reserved{true}} & \\
+{\reserved{tail}} &{\reserved{then}} &{\reserved{true}} \\
 \end{tabular}\\
 
 The symbols used in Normal are the following: \\
@@ -55,8 +57,10 @@ The symbols used in Normal are the following: \\
 \begin{tabular}{lll}
 {\symb{;}} &{\symb{{$=$}}} &{\symb{(}} \\
 {\symb{:}} &{\symb{)}} &{\symb{\{}} \\
-{\symb{\}}} &{\symb{,}} &{\symb{.}} \\
-{\symb{0}} &{\symb{{$-$}{$>$}}} & \\
+{\symb{\}}} &{\symb{{$<$}}} &{\symb{{$>$}}} \\
+{\symb{[}} &{\symb{]}} &{\symb{{$=$}{$>$}}} \\
+{\symb{,}} &{\symb{.}} &{\symb{0}} \\
+{\symb{{$-$}{$>$}}} & & \\
 \end{tabular}\\
 
 \subsection*{Comments}
@@ -84,7 +88,20 @@ All other symbols are terminals.\\
  & {\delimit}  &{\terminal{let}} {\nonterminal{Ident}} {\terminal{{$=$}}} {\nonterminal{Expr}} {\terminal{in}} {\nonterminal{Expr}}  \\
  & {\delimit}  &{\terminal{fun}} {\terminal{(}} {\nonterminal{Ident}} {\terminal{:}} {\nonterminal{Type}} {\terminal{)}} {\terminal{\{}} {\terminal{return}} {\nonterminal{Expr}} {\terminal{\}}}  \\
  & {\delimit}  &{\terminal{\{}} {\nonterminal{ListBinding}} {\terminal{\}}}  \\
+ & {\delimit}  &{\terminal{{$<$}}} {\nonterminal{Ident}} {\terminal{{$=$}}} {\nonterminal{Expr}} {\terminal{{$>$}}} {\terminal{as}} {\terminal{{$<$}}} {\nonterminal{ListFieldType}} {\terminal{{$>$}}}  \\
+ & {\delimit}  &{\terminal{match}} {\nonterminal{Expr1}} {\terminal{\{}} {\nonterminal{ListMatchCase}} {\terminal{\}}}  \\
+ & {\delimit}  &{\terminal{[}} {\nonterminal{ListExpr}} {\terminal{]}} {\terminal{as}} {\terminal{[}} {\nonterminal{Type}} {\terminal{]}}  \\
  & {\delimit}  &{\nonterminal{Expr1}}  \\
+\end{tabular}\\
+
+\begin{tabular}{lll}
+{\nonterminal{MatchCase}} & {\arrow}  &{\terminal{{$<$}}} {\nonterminal{Ident}} {\terminal{{$=$}}} {\nonterminal{Ident}} {\terminal{{$>$}}} {\terminal{{$=$}{$>$}}} {\nonterminal{Expr}}  \\
+\end{tabular}\\
+
+\begin{tabular}{lll}
+{\nonterminal{ListMatchCase}} & {\arrow}  &{\emptyP} \\
+ & {\delimit}  &{\nonterminal{MatchCase}}  \\
+ & {\delimit}  &{\nonterminal{MatchCase}} {\terminal{;}} {\nonterminal{ListMatchCase}}  \\
 \end{tabular}\\
 
 \begin{tabular}{lll}
@@ -103,9 +120,14 @@ All other symbols are terminals.\\
 \end{tabular}\\
 
 \begin{tabular}{lll}
-{\nonterminal{Expr2}} & {\arrow}  &{\terminal{succ}} {\nonterminal{Expr3}}  \\
+{\nonterminal{Expr2}} & {\arrow}  &{\terminal{cons}} {\nonterminal{Expr3}} {\nonterminal{Expr3}}  \\
+ & {\delimit}  &{\terminal{head}} {\nonterminal{Expr3}}  \\
+ & {\delimit}  &{\terminal{isempty}} {\nonterminal{Expr3}}  \\
+ & {\delimit}  &{\terminal{tail}} {\nonterminal{Expr3}}  \\
+ & {\delimit}  &{\terminal{succ}} {\nonterminal{Expr3}}  \\
  & {\delimit}  &{\terminal{pred}} {\nonterminal{Expr3}}  \\
  & {\delimit}  &{\terminal{iszero}} {\nonterminal{Expr3}}  \\
+ & {\delimit}  &{\terminal{fix}} {\nonterminal{Expr3}}  \\
  & {\delimit}  &{\nonterminal{Expr3}}  \\
 \end{tabular}\\
 
@@ -121,6 +143,8 @@ All other symbols are terminals.\\
 \begin{tabular}{lll}
 {\nonterminal{Type}} & {\arrow}  &{\nonterminal{Type1}} {\terminal{{$-$}{$>$}}} {\nonterminal{Type}}  \\
  & {\delimit}  &{\terminal{\{}} {\nonterminal{ListFieldType}} {\terminal{\}}}  \\
+ & {\delimit}  &{\terminal{{$<$}}} {\nonterminal{ListFieldType}} {\terminal{{$>$}}}  \\
+ & {\delimit}  &{\terminal{[}} {\nonterminal{Type}} {\terminal{]}}  \\
  & {\delimit}  &{\nonterminal{Type1}}  \\
 \end{tabular}\\
 
