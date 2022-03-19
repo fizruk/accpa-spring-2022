@@ -1,5 +1,17 @@
 # Lab 1. Untyped expressions, functions and nameless representation
 
+In this lab, we discuss implementation of an interpreter for simple untyped expressions with functions, relying on intermediate nameless representation to deal with possible name conflicts.
+
+## Project structure
+
+Syntax for normal and nameless representation of terms is defined using a labelled BNF in files `Syntax/Normal.cf` and `Syntax/Nameless.cf` correspondingly. BNF converter tool is used to generate parser, abstract syntax, and pretty printer automatically.
+
+Module `Convert.hs` describes conversion between normal and nameless representations.
+
+Module `Eval/Nameless.hs` defines evaluation of nameless terms. This implementation together with necessary conversions is used to define evaluation of normal terms in `Eval.hs` module.
+
+Finally, `interpreter.hs` is the main module, that performs parsing of the standard input, evaluating every expression, and pretty-printing the result.
+
 ## How to use
 
 The interpreter reads standard input, parses a series of expressions separated by a semicolon (`;`), evaluates each expression and prints out the results.
