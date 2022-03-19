@@ -1,0 +1,60 @@
+comment "//" ;
+comment "/*" "*/" ;
+
+ProgramExprs.  Program ::= [Expr] ;
+
+separator Expr ";" ;
+
+If.           Expr ::= "if" Expr "then" Expr "else" Expr ;
+Let.          Expr ::= "let" Ident "=" Expr "in" Expr ;
+Abstraction.  Expr ::= "fun" "(" Ident ":" Type ")" "{" "return" Expr "}" ;
+Record.       Expr ::= "{" [Binding] "}" ;
+Variant.      Expr ::= "<" Ident "=" Expr ">" "as" "<" [FieldType] ">" ;
+Match.        Expr ::= "match" Expr1 "{" [MatchCase] "}" ;
+List.         Expr ::= "[" [Expr] "]" "as" "[" Type "]" ;
+
+MatchCase.    MatchCase ::= "<" Ident "=" Ident ">" "=>" Expr ;
+
+separator MatchCase ";" ;
+
+Binding.      Binding ::= Ident "=" Expr ;
+
+separator Binding "," ;
+
+Application.  Expr1 ::= Expr1 Expr2 ;
+
+ConsList.     Expr2 ::= "cons" Expr3 Expr3 ;
+Head.         Expr2 ::= "head" Expr3 ;
+IsEmpty.      Expr2 ::= "isempty" Expr3 ;
+Tail.         Expr2 ::= "tail" Expr3 ;
+Succ.         Expr2 ::= "succ" Expr3 ;
+Pred.         Expr2 ::= "pred" Expr3 ;
+IsZero.       Expr2 ::= "iszero" Expr3 ;
+Fix.          Expr2 ::= "fix" Expr3 ;
+
+Dot.          Expr3 ::= Expr3 "." Ident ;
+ConstTrue.    Expr3 ::= "true" ;
+ConstFalse.   Expr3 ::= "false" ;
+ConstZero.    Expr3 ::= "0" ;
+Var.          Expr3 ::= Ident ;
+
+_. Expr   ::= Expr1 ;
+_. Expr1  ::= Expr2 ;
+_. Expr2  ::= Expr3 ;
+_. Expr3  ::= "(" Expr ")" ;
+
+FunType.      Type ::= Type1 "->" Type ;
+RecordType.   Type ::= "{" [FieldType] "}" ;
+VariantType.  Type ::= "<" [FieldType] ">" ;
+ListType.     Type ::= "[" Type "]" ;
+BoolType.     Type1 ::= "Bool" ;
+NatType.      Type1 ::= "Nat" ;
+
+FieldType.  FieldType ::= Ident ":" Type ;
+
+separator FieldType "," ;
+
+_.  Type  ::= Type1 ;
+_.  Type1 ::= "(" Type ")" ;
+
+Typing.     Typing  ::= Expr ":" Type ;
