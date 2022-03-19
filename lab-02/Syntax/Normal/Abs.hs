@@ -15,12 +15,12 @@ data Program = ProgramExprs [Expr]
   deriving (C.Eq, C.Ord, C.Show, C.Read)
 
 data Expr
-    = Application Expr Expr
-    | If Expr Expr Expr
+    = If Expr Expr Expr
+    | Abstraction Ident Type Expr
+    | Application Expr Expr
     | Succ Expr
     | Pred Expr
     | IsZero Expr
-    | Abstraction Ident Type Expr
     | ConstTrue
     | ConstFalse
     | ConstZero

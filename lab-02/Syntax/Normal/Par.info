@@ -11,33 +11,35 @@ Grammar
 	%start_pExpr -> Expr                               (2)
 	%start_pExpr1 -> Expr1                             (3)
 	%start_pExpr2 -> Expr2                             (4)
-	%start_pType -> Type                               (5)
-	%start_pType1 -> Type1                             (6)
-	%start_pTyping -> Typing                           (7)
-	Ident -> L_Ident                                   (8)
-	Program -> ListExpr                                (9)
-	ListExpr ->                                        (10)
-	ListExpr -> Expr                                   (11)
-	ListExpr -> Expr ';' ListExpr                      (12)
-	Expr -> Expr Expr1                                 (13)
-	Expr -> Expr1                                      (14)
-	Expr1 -> 'if' Expr1 'then' Expr1 'else' Expr1      (15)
-	Expr1 -> 'succ' Expr2                              (16)
-	Expr1 -> 'pred' Expr2                              (17)
-	Expr1 -> 'iszero' Expr2                            (18)
-	Expr1 -> 'fun' '(' Ident ':' Type ')' '{' 'return' Expr '}'   (19)
-	Expr1 -> Expr2                                     (20)
-	Expr2 -> 'true'                                    (21)
-	Expr2 -> 'false'                                   (22)
-	Expr2 -> '0'                                       (23)
-	Expr2 -> Ident                                     (24)
-	Expr2 -> '(' Expr ')'                              (25)
-	Type -> Type1 '->' Type                            (26)
-	Type -> Type1                                      (27)
-	Type1 -> 'Bool'                                    (28)
-	Type1 -> 'Nat'                                     (29)
-	Type1 -> '(' Type ')'                              (30)
-	Typing -> Expr ':' Type                            (31)
+	%start_pExpr3 -> Expr3                             (5)
+	%start_pType -> Type                               (6)
+	%start_pType1 -> Type1                             (7)
+	%start_pTyping -> Typing                           (8)
+	Ident -> L_Ident                                   (9)
+	Program -> ListExpr                                (10)
+	ListExpr ->                                        (11)
+	ListExpr -> Expr                                   (12)
+	ListExpr -> Expr ';' ListExpr                      (13)
+	Expr -> 'if' Expr 'then' Expr 'else' Expr          (14)
+	Expr -> 'fun' '(' Ident ':' Type ')' '{' 'return' Expr '}'   (15)
+	Expr -> Expr1                                      (16)
+	Expr1 -> Expr1 Expr2                               (17)
+	Expr1 -> Expr2                                     (18)
+	Expr2 -> 'succ' Expr3                              (19)
+	Expr2 -> 'pred' Expr3                              (20)
+	Expr2 -> 'iszero' Expr3                            (21)
+	Expr2 -> Expr3                                     (22)
+	Expr3 -> 'true'                                    (23)
+	Expr3 -> 'false'                                   (24)
+	Expr3 -> '0'                                       (25)
+	Expr3 -> Ident                                     (26)
+	Expr3 -> '(' Expr ')'                              (27)
+	Type -> Type1 '->' Type                            (28)
+	Type -> Type1                                      (29)
+	Type1 -> 'Bool'                                    (30)
+	Type1 -> 'Nat'                                     (31)
+	Type1 -> '(' Type ')'                              (32)
+	Typing -> Expr ':' Type                            (33)
 
 -----------------------------------------------------------------------------
 Terminals
@@ -72,18 +74,20 @@ Non-terminals
 	%start_pExpr    rule  2
 	%start_pExpr1   rule  3
 	%start_pExpr2   rule  4
-	%start_pType    rule  5
-	%start_pType1   rule  6
-	%start_pTyping  rule  7
-	Ident           rule  8
-	Program         rule  9
-	ListExpr        rules 10, 11, 12
-	Expr            rules 13, 14
-	Expr1           rules 15, 16, 17, 18, 19, 20
-	Expr2           rules 21, 22, 23, 24, 25
-	Type            rules 26, 27
-	Type1           rules 28, 29, 30
-	Typing          rule  31
+	%start_pExpr3   rule  5
+	%start_pType    rule  6
+	%start_pType1   rule  7
+	%start_pTyping  rule  8
+	Ident           rule  9
+	Program         rule  10
+	ListExpr        rules 11, 12, 13
+	Expr            rules 14, 15, 16
+	Expr1           rules 17, 18
+	Expr2           rules 19, 20, 21, 22
+	Expr3           rules 23, 24, 25, 26, 27
+	Type            rules 28, 29
+	Type1           rules 30, 31, 32
+	Typing          rule  33
 
 -----------------------------------------------------------------------------
 States
@@ -92,662 +96,245 @@ State 0
 
 	%start_pProgram -> . Program                        (rule 0)
 
-	'('            shift, and enter state 15
-	'0'            shift, and enter state 16
-	'false'        shift, and enter state 17
-	'fun'          shift, and enter state 18
-	'if'           shift, and enter state 19
-	'iszero'       shift, and enter state 20
-	'pred'         shift, and enter state 21
-	'succ'         shift, and enter state 22
-	'true'         shift, and enter state 23
-	L_Ident        shift, and enter state 9
-	%eof           reduce using rule 10
+	'('            shift, and enter state 17
+	'0'            shift, and enter state 18
+	'false'        shift, and enter state 19
+	'fun'          shift, and enter state 20
+	'if'           shift, and enter state 21
+	'iszero'       shift, and enter state 22
+	'pred'         shift, and enter state 23
+	'succ'         shift, and enter state 24
+	'true'         shift, and enter state 25
+	L_Ident        shift, and enter state 10
+	%eof           reduce using rule 11
 
-	Ident          goto state 10
-	Program        goto state 35
-	ListExpr       goto state 36
-	Expr           goto state 34
-	Expr1          goto state 12
-	Expr2          goto state 13
+	Ident          goto state 11
+	Program        goto state 38
+	ListExpr       goto state 39
+	Expr           goto state 37
+	Expr1          goto state 13
+	Expr2          goto state 14
+	Expr3          goto state 15
 
 State 1
 
 	%start_pListExpr -> . ListExpr                      (rule 1)
 
-	'('            shift, and enter state 15
-	'0'            shift, and enter state 16
-	'false'        shift, and enter state 17
-	'fun'          shift, and enter state 18
-	'if'           shift, and enter state 19
-	'iszero'       shift, and enter state 20
-	'pred'         shift, and enter state 21
-	'succ'         shift, and enter state 22
-	'true'         shift, and enter state 23
-	L_Ident        shift, and enter state 9
-	%eof           reduce using rule 10
+	'('            shift, and enter state 17
+	'0'            shift, and enter state 18
+	'false'        shift, and enter state 19
+	'fun'          shift, and enter state 20
+	'if'           shift, and enter state 21
+	'iszero'       shift, and enter state 22
+	'pred'         shift, and enter state 23
+	'succ'         shift, and enter state 24
+	'true'         shift, and enter state 25
+	L_Ident        shift, and enter state 10
+	%eof           reduce using rule 11
 
-	Ident          goto state 10
-	ListExpr       goto state 33
-	Expr           goto state 34
-	Expr1          goto state 12
-	Expr2          goto state 13
+	Ident          goto state 11
+	ListExpr       goto state 36
+	Expr           goto state 37
+	Expr1          goto state 13
+	Expr2          goto state 14
+	Expr3          goto state 15
 
 State 2
 
 	%start_pExpr -> . Expr                              (rule 2)
 
-	'('            shift, and enter state 15
-	'0'            shift, and enter state 16
-	'false'        shift, and enter state 17
-	'fun'          shift, and enter state 18
-	'if'           shift, and enter state 19
-	'iszero'       shift, and enter state 20
-	'pred'         shift, and enter state 21
-	'succ'         shift, and enter state 22
-	'true'         shift, and enter state 23
-	L_Ident        shift, and enter state 9
+	'('            shift, and enter state 17
+	'0'            shift, and enter state 18
+	'false'        shift, and enter state 19
+	'fun'          shift, and enter state 20
+	'if'           shift, and enter state 21
+	'iszero'       shift, and enter state 22
+	'pred'         shift, and enter state 23
+	'succ'         shift, and enter state 24
+	'true'         shift, and enter state 25
+	L_Ident        shift, and enter state 10
 
-	Ident          goto state 10
-	Expr           goto state 32
-	Expr1          goto state 12
-	Expr2          goto state 13
+	Ident          goto state 11
+	Expr           goto state 35
+	Expr1          goto state 13
+	Expr2          goto state 14
+	Expr3          goto state 15
 
 State 3
 
 	%start_pExpr1 -> . Expr1                            (rule 3)
 
-	'('            shift, and enter state 15
-	'0'            shift, and enter state 16
-	'false'        shift, and enter state 17
-	'fun'          shift, and enter state 18
-	'if'           shift, and enter state 19
-	'iszero'       shift, and enter state 20
-	'pred'         shift, and enter state 21
-	'succ'         shift, and enter state 22
-	'true'         shift, and enter state 23
-	L_Ident        shift, and enter state 9
+	'('            shift, and enter state 17
+	'0'            shift, and enter state 18
+	'false'        shift, and enter state 19
+	'iszero'       shift, and enter state 22
+	'pred'         shift, and enter state 23
+	'succ'         shift, and enter state 24
+	'true'         shift, and enter state 25
+	L_Ident        shift, and enter state 10
 
-	Ident          goto state 10
-	Expr1          goto state 31
-	Expr2          goto state 13
+	Ident          goto state 11
+	Expr1          goto state 34
+	Expr2          goto state 14
+	Expr3          goto state 15
 
 State 4
 
 	%start_pExpr2 -> . Expr2                            (rule 4)
 
-	'('            shift, and enter state 15
-	'0'            shift, and enter state 16
-	'false'        shift, and enter state 17
-	'true'         shift, and enter state 23
-	L_Ident        shift, and enter state 9
+	'('            shift, and enter state 17
+	'0'            shift, and enter state 18
+	'false'        shift, and enter state 19
+	'iszero'       shift, and enter state 22
+	'pred'         shift, and enter state 23
+	'succ'         shift, and enter state 24
+	'true'         shift, and enter state 25
+	L_Ident        shift, and enter state 10
 
-	Ident          goto state 10
-	Expr2          goto state 30
+	Ident          goto state 11
+	Expr2          goto state 33
+	Expr3          goto state 15
 
 State 5
 
-	%start_pType -> . Type                              (rule 5)
+	%start_pExpr3 -> . Expr3                            (rule 5)
 
-	'('            shift, and enter state 25
-	'Bool'         shift, and enter state 26
-	'Nat'          shift, and enter state 27
+	'('            shift, and enter state 17
+	'0'            shift, and enter state 18
+	'false'        shift, and enter state 19
+	'true'         shift, and enter state 25
+	L_Ident        shift, and enter state 10
 
-	Type           goto state 28
-	Type1          goto state 29
+	Ident          goto state 11
+	Expr3          goto state 32
 
 State 6
 
-	%start_pType1 -> . Type1                            (rule 6)
+	%start_pType -> . Type                              (rule 6)
 
-	'('            shift, and enter state 25
-	'Bool'         shift, and enter state 26
-	'Nat'          shift, and enter state 27
+	'('            shift, and enter state 27
+	'Bool'         shift, and enter state 28
+	'Nat'          shift, and enter state 29
 
-	Type1          goto state 24
+	Type           goto state 30
+	Type1          goto state 31
 
 State 7
 
-	%start_pTyping -> . Typing                          (rule 7)
+	%start_pType1 -> . Type1                            (rule 7)
 
-	'('            shift, and enter state 15
-	'0'            shift, and enter state 16
-	'false'        shift, and enter state 17
-	'fun'          shift, and enter state 18
-	'if'           shift, and enter state 19
-	'iszero'       shift, and enter state 20
-	'pred'         shift, and enter state 21
-	'succ'         shift, and enter state 22
-	'true'         shift, and enter state 23
-	L_Ident        shift, and enter state 9
+	'('            shift, and enter state 27
+	'Bool'         shift, and enter state 28
+	'Nat'          shift, and enter state 29
 
-	Ident          goto state 10
-	Expr           goto state 11
-	Expr1          goto state 12
-	Expr2          goto state 13
-	Typing         goto state 14
+	Type1          goto state 26
 
 State 8
 
-	Ident -> . L_Ident                                  (rule 8)
+	%start_pTyping -> . Typing                          (rule 8)
 
-	L_Ident        shift, and enter state 9
+	'('            shift, and enter state 17
+	'0'            shift, and enter state 18
+	'false'        shift, and enter state 19
+	'fun'          shift, and enter state 20
+	'if'           shift, and enter state 21
+	'iszero'       shift, and enter state 22
+	'pred'         shift, and enter state 23
+	'succ'         shift, and enter state 24
+	'true'         shift, and enter state 25
+	L_Ident        shift, and enter state 10
 
+	Ident          goto state 11
+	Expr           goto state 12
+	Expr1          goto state 13
+	Expr2          goto state 14
+	Expr3          goto state 15
+	Typing         goto state 16
 
 State 9
 
-	Ident -> L_Ident .                                  (rule 8)
+	Ident -> . L_Ident                                  (rule 9)
 
-	'('            reduce using rule 8
-	')'            reduce using rule 8
-	'0'            reduce using rule 8
-	':'            reduce using rule 8
-	';'            reduce using rule 8
-	'else'         reduce using rule 8
-	'false'        reduce using rule 8
-	'fun'          reduce using rule 8
-	'if'           reduce using rule 8
-	'iszero'       reduce using rule 8
-	'pred'         reduce using rule 8
-	'succ'         reduce using rule 8
-	'then'         reduce using rule 8
-	'true'         reduce using rule 8
-	'}'            reduce using rule 8
-	L_Ident        reduce using rule 8
-	%eof           reduce using rule 8
+	L_Ident        shift, and enter state 10
 
 
 State 10
 
-	Expr2 -> Ident .                                    (rule 24)
+	Ident -> L_Ident .                                  (rule 9)
 
-	'('            reduce using rule 24
-	')'            reduce using rule 24
-	'0'            reduce using rule 24
-	':'            reduce using rule 24
-	';'            reduce using rule 24
-	'else'         reduce using rule 24
-	'false'        reduce using rule 24
-	'fun'          reduce using rule 24
-	'if'           reduce using rule 24
-	'iszero'       reduce using rule 24
-	'pred'         reduce using rule 24
-	'succ'         reduce using rule 24
-	'then'         reduce using rule 24
-	'true'         reduce using rule 24
-	'}'            reduce using rule 24
-	L_Ident        reduce using rule 24
-	%eof           reduce using rule 24
+	'('            reduce using rule 9
+	')'            reduce using rule 9
+	'0'            reduce using rule 9
+	':'            reduce using rule 9
+	';'            reduce using rule 9
+	'else'         reduce using rule 9
+	'false'        reduce using rule 9
+	'iszero'       reduce using rule 9
+	'pred'         reduce using rule 9
+	'succ'         reduce using rule 9
+	'then'         reduce using rule 9
+	'true'         reduce using rule 9
+	'}'            reduce using rule 9
+	L_Ident        reduce using rule 9
+	%eof           reduce using rule 9
 
 
 State 11
 
-	Expr -> Expr . Expr1                                (rule 13)
-	Typing -> Expr . ':' Type                           (rule 31)
+	Expr3 -> Ident .                                    (rule 26)
 
-	'('            shift, and enter state 15
-	'0'            shift, and enter state 16
-	':'            shift, and enter state 47
-	'false'        shift, and enter state 17
-	'fun'          shift, and enter state 18
-	'if'           shift, and enter state 19
-	'iszero'       shift, and enter state 20
-	'pred'         shift, and enter state 21
-	'succ'         shift, and enter state 22
-	'true'         shift, and enter state 23
-	L_Ident        shift, and enter state 9
+	'('            reduce using rule 26
+	')'            reduce using rule 26
+	'0'            reduce using rule 26
+	':'            reduce using rule 26
+	';'            reduce using rule 26
+	'else'         reduce using rule 26
+	'false'        reduce using rule 26
+	'iszero'       reduce using rule 26
+	'pred'         reduce using rule 26
+	'succ'         reduce using rule 26
+	'then'         reduce using rule 26
+	'true'         reduce using rule 26
+	'}'            reduce using rule 26
+	L_Ident        reduce using rule 26
+	%eof           reduce using rule 26
 
-	Ident          goto state 10
-	Expr1          goto state 37
-	Expr2          goto state 13
 
 State 12
 
-	Expr -> Expr1 .                                     (rule 14)
+	Typing -> Expr . ':' Type                           (rule 33)
 
-	'('            reduce using rule 14
-	')'            reduce using rule 14
-	'0'            reduce using rule 14
-	':'            reduce using rule 14
-	';'            reduce using rule 14
-	'false'        reduce using rule 14
-	'fun'          reduce using rule 14
-	'if'           reduce using rule 14
-	'iszero'       reduce using rule 14
-	'pred'         reduce using rule 14
-	'succ'         reduce using rule 14
-	'true'         reduce using rule 14
-	'}'            reduce using rule 14
-	L_Ident        reduce using rule 14
-	%eof           reduce using rule 14
+	':'            shift, and enter state 50
 
 
 State 13
 
-	Expr1 -> Expr2 .                                    (rule 20)
+	Expr -> Expr1 .                                     (rule 16)
+	Expr1 -> Expr1 . Expr2                              (rule 17)
 
-	'('            reduce using rule 20
-	')'            reduce using rule 20
-	'0'            reduce using rule 20
-	':'            reduce using rule 20
-	';'            reduce using rule 20
-	'else'         reduce using rule 20
-	'false'        reduce using rule 20
-	'fun'          reduce using rule 20
-	'if'           reduce using rule 20
-	'iszero'       reduce using rule 20
-	'pred'         reduce using rule 20
-	'succ'         reduce using rule 20
-	'then'         reduce using rule 20
-	'true'         reduce using rule 20
-	'}'            reduce using rule 20
-	L_Ident        reduce using rule 20
-	%eof           reduce using rule 20
-
-
-State 14
-
-	%start_pTyping -> Typing .                          (rule 7)
-
-	%eof           accept
-
-
-State 15
-
-	Expr2 -> '(' . Expr ')'                             (rule 25)
-
-	'('            shift, and enter state 15
-	'0'            shift, and enter state 16
-	'false'        shift, and enter state 17
-	'fun'          shift, and enter state 18
-	'if'           shift, and enter state 19
-	'iszero'       shift, and enter state 20
-	'pred'         shift, and enter state 21
-	'succ'         shift, and enter state 22
-	'true'         shift, and enter state 23
-	L_Ident        shift, and enter state 9
-
-	Ident          goto state 10
-	Expr           goto state 46
-	Expr1          goto state 12
-	Expr2          goto state 13
-
-State 16
-
-	Expr2 -> '0' .                                      (rule 23)
-
-	'('            reduce using rule 23
-	')'            reduce using rule 23
-	'0'            reduce using rule 23
-	':'            reduce using rule 23
-	';'            reduce using rule 23
-	'else'         reduce using rule 23
-	'false'        reduce using rule 23
-	'fun'          reduce using rule 23
-	'if'           reduce using rule 23
-	'iszero'       reduce using rule 23
-	'pred'         reduce using rule 23
-	'succ'         reduce using rule 23
-	'then'         reduce using rule 23
-	'true'         reduce using rule 23
-	'}'            reduce using rule 23
-	L_Ident        reduce using rule 23
-	%eof           reduce using rule 23
-
-
-State 17
-
-	Expr2 -> 'false' .                                  (rule 22)
-
-	'('            reduce using rule 22
-	')'            reduce using rule 22
-	'0'            reduce using rule 22
-	':'            reduce using rule 22
-	';'            reduce using rule 22
-	'else'         reduce using rule 22
-	'false'        reduce using rule 22
-	'fun'          reduce using rule 22
-	'if'           reduce using rule 22
-	'iszero'       reduce using rule 22
-	'pred'         reduce using rule 22
-	'succ'         reduce using rule 22
-	'then'         reduce using rule 22
-	'true'         reduce using rule 22
-	'}'            reduce using rule 22
-	L_Ident        reduce using rule 22
-	%eof           reduce using rule 22
-
-
-State 18
-
-	Expr1 -> 'fun' . '(' Ident ':' Type ')' '{' 'return' Expr '}'    (rule 19)
-
-	'('            shift, and enter state 45
-
-
-State 19
-
-	Expr1 -> 'if' . Expr1 'then' Expr1 'else' Expr1     (rule 15)
-
-	'('            shift, and enter state 15
-	'0'            shift, and enter state 16
-	'false'        shift, and enter state 17
-	'fun'          shift, and enter state 18
-	'if'           shift, and enter state 19
-	'iszero'       shift, and enter state 20
-	'pred'         shift, and enter state 21
-	'succ'         shift, and enter state 22
-	'true'         shift, and enter state 23
-	L_Ident        shift, and enter state 9
-
-	Ident          goto state 10
-	Expr1          goto state 44
-	Expr2          goto state 13
-
-State 20
-
-	Expr1 -> 'iszero' . Expr2                           (rule 18)
-
-	'('            shift, and enter state 15
-	'0'            shift, and enter state 16
-	'false'        shift, and enter state 17
-	'true'         shift, and enter state 23
-	L_Ident        shift, and enter state 9
-
-	Ident          goto state 10
-	Expr2          goto state 43
-
-State 21
-
-	Expr1 -> 'pred' . Expr2                             (rule 17)
-
-	'('            shift, and enter state 15
-	'0'            shift, and enter state 16
-	'false'        shift, and enter state 17
-	'true'         shift, and enter state 23
-	L_Ident        shift, and enter state 9
-
-	Ident          goto state 10
-	Expr2          goto state 42
-
-State 22
-
-	Expr1 -> 'succ' . Expr2                             (rule 16)
-
-	'('            shift, and enter state 15
-	'0'            shift, and enter state 16
-	'false'        shift, and enter state 17
-	'true'         shift, and enter state 23
-	L_Ident        shift, and enter state 9
-
-	Ident          goto state 10
-	Expr2          goto state 41
-
-State 23
-
-	Expr2 -> 'true' .                                   (rule 21)
-
-	'('            reduce using rule 21
-	')'            reduce using rule 21
-	'0'            reduce using rule 21
-	':'            reduce using rule 21
-	';'            reduce using rule 21
-	'else'         reduce using rule 21
-	'false'        reduce using rule 21
-	'fun'          reduce using rule 21
-	'if'           reduce using rule 21
-	'iszero'       reduce using rule 21
-	'pred'         reduce using rule 21
-	'succ'         reduce using rule 21
-	'then'         reduce using rule 21
-	'true'         reduce using rule 21
-	'}'            reduce using rule 21
-	L_Ident        reduce using rule 21
-	%eof           reduce using rule 21
-
-
-State 24
-
-	%start_pType1 -> Type1 .                            (rule 6)
-
-	%eof           accept
-
-
-State 25
-
-	Type1 -> '(' . Type ')'                             (rule 30)
-
-	'('            shift, and enter state 25
-	'Bool'         shift, and enter state 26
-	'Nat'          shift, and enter state 27
-
-	Type           goto state 40
-	Type1          goto state 29
-
-State 26
-
-	Type1 -> 'Bool' .                                   (rule 28)
-
-	')'            reduce using rule 28
-	'->'           reduce using rule 28
-	%eof           reduce using rule 28
-
-
-State 27
-
-	Type1 -> 'Nat' .                                    (rule 29)
-
-	')'            reduce using rule 29
-	'->'           reduce using rule 29
-	%eof           reduce using rule 29
-
-
-State 28
-
-	%start_pType -> Type .                              (rule 5)
-
-	%eof           accept
-
-
-State 29
-
-	Type -> Type1 . '->' Type                           (rule 26)
-	Type -> Type1 .                                     (rule 27)
-
-	')'            reduce using rule 27
-	'->'           shift, and enter state 39
-	%eof           reduce using rule 27
-
-
-State 30
-
-	%start_pExpr2 -> Expr2 .                            (rule 4)
-
-	%eof           accept
-
-
-State 31
-
-	%start_pExpr1 -> Expr1 .                            (rule 3)
-
-	%eof           accept
-
-
-State 32
-
-	%start_pExpr -> Expr .                              (rule 2)
-	Expr -> Expr . Expr1                                (rule 13)
-
-	'('            shift, and enter state 15
-	'0'            shift, and enter state 16
-	'false'        shift, and enter state 17
-	'fun'          shift, and enter state 18
-	'if'           shift, and enter state 19
-	'iszero'       shift, and enter state 20
-	'pred'         shift, and enter state 21
-	'succ'         shift, and enter state 22
-	'true'         shift, and enter state 23
-	L_Ident        shift, and enter state 9
-	%eof           accept
-
-	Ident          goto state 10
-	Expr1          goto state 37
-	Expr2          goto state 13
-
-State 33
-
-	%start_pListExpr -> ListExpr .                      (rule 1)
-
-	%eof           accept
-
-
-State 34
-
-	ListExpr -> Expr .                                  (rule 11)
-	ListExpr -> Expr . ';' ListExpr                     (rule 12)
-	Expr -> Expr . Expr1                                (rule 13)
-
-	'('            shift, and enter state 15
-	'0'            shift, and enter state 16
-	';'            shift, and enter state 38
-	'false'        shift, and enter state 17
-	'fun'          shift, and enter state 18
-	'if'           shift, and enter state 19
-	'iszero'       shift, and enter state 20
-	'pred'         shift, and enter state 21
-	'succ'         shift, and enter state 22
-	'true'         shift, and enter state 23
-	L_Ident        shift, and enter state 9
-	%eof           reduce using rule 11
-
-	Ident          goto state 10
-	Expr1          goto state 37
-	Expr2          goto state 13
-
-State 35
-
-	%start_pProgram -> Program .                        (rule 0)
-
-	%eof           accept
-
-
-State 36
-
-	Program -> ListExpr .                               (rule 9)
-
-	%eof           reduce using rule 9
-
-
-State 37
-
-	Expr -> Expr Expr1 .                                (rule 13)
-
-	'('            reduce using rule 13
-	')'            reduce using rule 13
-	'0'            reduce using rule 13
-	':'            reduce using rule 13
-	';'            reduce using rule 13
-	'false'        reduce using rule 13
-	'fun'          reduce using rule 13
-	'if'           reduce using rule 13
-	'iszero'       reduce using rule 13
-	'pred'         reduce using rule 13
-	'succ'         reduce using rule 13
-	'true'         reduce using rule 13
-	'}'            reduce using rule 13
-	L_Ident        reduce using rule 13
-	%eof           reduce using rule 13
-
-
-State 38
-
-	ListExpr -> Expr ';' . ListExpr                     (rule 12)
-
-	'('            shift, and enter state 15
-	'0'            shift, and enter state 16
-	'false'        shift, and enter state 17
-	'fun'          shift, and enter state 18
-	'if'           shift, and enter state 19
-	'iszero'       shift, and enter state 20
-	'pred'         shift, and enter state 21
-	'succ'         shift, and enter state 22
-	'true'         shift, and enter state 23
-	L_Ident        shift, and enter state 9
-	%eof           reduce using rule 10
-
-	Ident          goto state 10
-	ListExpr       goto state 54
-	Expr           goto state 34
-	Expr1          goto state 12
-	Expr2          goto state 13
-
-State 39
-
-	Type -> Type1 '->' . Type                           (rule 26)
-
-	'('            shift, and enter state 25
-	'Bool'         shift, and enter state 26
-	'Nat'          shift, and enter state 27
-
-	Type           goto state 53
-	Type1          goto state 29
-
-State 40
-
-	Type1 -> '(' Type . ')'                             (rule 30)
-
-	')'            shift, and enter state 52
-
-
-State 41
-
-	Expr1 -> 'succ' Expr2 .                             (rule 16)
-
-	'('            reduce using rule 16
+	'('            shift, and enter state 17
 	')'            reduce using rule 16
-	'0'            reduce using rule 16
+	'0'            shift, and enter state 18
 	':'            reduce using rule 16
 	';'            reduce using rule 16
 	'else'         reduce using rule 16
-	'false'        reduce using rule 16
-	'fun'          reduce using rule 16
-	'if'           reduce using rule 16
-	'iszero'       reduce using rule 16
-	'pred'         reduce using rule 16
-	'succ'         reduce using rule 16
+	'false'        shift, and enter state 19
+	'iszero'       shift, and enter state 22
+	'pred'         shift, and enter state 23
+	'succ'         shift, and enter state 24
 	'then'         reduce using rule 16
-	'true'         reduce using rule 16
+	'true'         shift, and enter state 25
 	'}'            reduce using rule 16
-	L_Ident        reduce using rule 16
+	L_Ident        shift, and enter state 10
 	%eof           reduce using rule 16
 
+	Ident          goto state 11
+	Expr2          goto state 41
+	Expr3          goto state 15
 
-State 42
+State 14
 
-	Expr1 -> 'pred' Expr2 .                             (rule 17)
-
-	'('            reduce using rule 17
-	')'            reduce using rule 17
-	'0'            reduce using rule 17
-	':'            reduce using rule 17
-	';'            reduce using rule 17
-	'else'         reduce using rule 17
-	'false'        reduce using rule 17
-	'fun'          reduce using rule 17
-	'if'           reduce using rule 17
-	'iszero'       reduce using rule 17
-	'pred'         reduce using rule 17
-	'succ'         reduce using rule 17
-	'then'         reduce using rule 17
-	'true'         reduce using rule 17
-	'}'            reduce using rule 17
-	L_Ident        reduce using rule 17
-	%eof           reduce using rule 17
-
-
-State 43
-
-	Expr1 -> 'iszero' Expr2 .                           (rule 18)
+	Expr1 -> Expr2 .                                    (rule 18)
 
 	'('            reduce using rule 18
 	')'            reduce using rule 18
@@ -756,8 +343,6 @@ State 43
 	';'            reduce using rule 18
 	'else'         reduce using rule 18
 	'false'        reduce using rule 18
-	'fun'          reduce using rule 18
-	'if'           reduce using rule 18
 	'iszero'       reduce using rule 18
 	'pred'         reduce using rule 18
 	'succ'         reduce using rule 18
@@ -768,63 +353,58 @@ State 43
 	%eof           reduce using rule 18
 
 
-State 44
+State 15
 
-	Expr1 -> 'if' Expr1 . 'then' Expr1 'else' Expr1     (rule 15)
+	Expr2 -> Expr3 .                                    (rule 22)
 
-	'then'         shift, and enter state 51
-
-
-State 45
-
-	Expr1 -> 'fun' '(' . Ident ':' Type ')' '{' 'return' Expr '}'    (rule 19)
-
-	L_Ident        shift, and enter state 9
-
-	Ident          goto state 50
-
-State 46
-
-	Expr -> Expr . Expr1                                (rule 13)
-	Expr2 -> '(' Expr . ')'                             (rule 25)
-
-	'('            shift, and enter state 15
-	')'            shift, and enter state 49
-	'0'            shift, and enter state 16
-	'false'        shift, and enter state 17
-	'fun'          shift, and enter state 18
-	'if'           shift, and enter state 19
-	'iszero'       shift, and enter state 20
-	'pred'         shift, and enter state 21
-	'succ'         shift, and enter state 22
-	'true'         shift, and enter state 23
-	L_Ident        shift, and enter state 9
-
-	Ident          goto state 10
-	Expr1          goto state 37
-	Expr2          goto state 13
-
-State 47
-
-	Typing -> Expr ':' . Type                           (rule 31)
-
-	'('            shift, and enter state 25
-	'Bool'         shift, and enter state 26
-	'Nat'          shift, and enter state 27
-
-	Type           goto state 48
-	Type1          goto state 29
-
-State 48
-
-	Typing -> Expr ':' Type .                           (rule 31)
-
-	%eof           reduce using rule 31
+	'('            reduce using rule 22
+	')'            reduce using rule 22
+	'0'            reduce using rule 22
+	':'            reduce using rule 22
+	';'            reduce using rule 22
+	'else'         reduce using rule 22
+	'false'        reduce using rule 22
+	'iszero'       reduce using rule 22
+	'pred'         reduce using rule 22
+	'succ'         reduce using rule 22
+	'then'         reduce using rule 22
+	'true'         reduce using rule 22
+	'}'            reduce using rule 22
+	L_Ident        reduce using rule 22
+	%eof           reduce using rule 22
 
 
-State 49
+State 16
 
-	Expr2 -> '(' Expr ')' .                             (rule 25)
+	%start_pTyping -> Typing .                          (rule 8)
+
+	%eof           accept
+
+
+State 17
+
+	Expr3 -> '(' . Expr ')'                             (rule 27)
+
+	'('            shift, and enter state 17
+	'0'            shift, and enter state 18
+	'false'        shift, and enter state 19
+	'fun'          shift, and enter state 20
+	'if'           shift, and enter state 21
+	'iszero'       shift, and enter state 22
+	'pred'         shift, and enter state 23
+	'succ'         shift, and enter state 24
+	'true'         shift, and enter state 25
+	L_Ident        shift, and enter state 10
+
+	Ident          goto state 11
+	Expr           goto state 49
+	Expr1          goto state 13
+	Expr2          goto state 14
+	Expr3          goto state 15
+
+State 18
+
+	Expr3 -> '0' .                                      (rule 25)
 
 	'('            reduce using rule 25
 	')'            reduce using rule 25
@@ -833,8 +413,6 @@ State 49
 	';'            reduce using rule 25
 	'else'         reduce using rule 25
 	'false'        reduce using rule 25
-	'fun'          reduce using rule 25
-	'if'           reduce using rule 25
 	'iszero'       reduce using rule 25
 	'pred'         reduce using rule 25
 	'succ'         reduce using rule 25
@@ -845,181 +423,303 @@ State 49
 	%eof           reduce using rule 25
 
 
-State 50
+State 19
 
-	Expr1 -> 'fun' '(' Ident . ':' Type ')' '{' 'return' Expr '}'    (rule 19)
+	Expr3 -> 'false' .                                  (rule 24)
 
-	':'            shift, and enter state 56
+	'('            reduce using rule 24
+	')'            reduce using rule 24
+	'0'            reduce using rule 24
+	':'            reduce using rule 24
+	';'            reduce using rule 24
+	'else'         reduce using rule 24
+	'false'        reduce using rule 24
+	'iszero'       reduce using rule 24
+	'pred'         reduce using rule 24
+	'succ'         reduce using rule 24
+	'then'         reduce using rule 24
+	'true'         reduce using rule 24
+	'}'            reduce using rule 24
+	L_Ident        reduce using rule 24
+	%eof           reduce using rule 24
 
 
-State 51
+State 20
 
-	Expr1 -> 'if' Expr1 'then' . Expr1 'else' Expr1     (rule 15)
+	Expr -> 'fun' . '(' Ident ':' Type ')' '{' 'return' Expr '}'    (rule 15)
 
-	'('            shift, and enter state 15
-	'0'            shift, and enter state 16
-	'false'        shift, and enter state 17
-	'fun'          shift, and enter state 18
-	'if'           shift, and enter state 19
-	'iszero'       shift, and enter state 20
-	'pred'         shift, and enter state 21
-	'succ'         shift, and enter state 22
-	'true'         shift, and enter state 23
-	L_Ident        shift, and enter state 9
+	'('            shift, and enter state 48
 
-	Ident          goto state 10
-	Expr1          goto state 55
-	Expr2          goto state 13
 
-State 52
+State 21
 
-	Type1 -> '(' Type ')' .                             (rule 30)
+	Expr -> 'if' . Expr 'then' Expr 'else' Expr         (rule 14)
+
+	'('            shift, and enter state 17
+	'0'            shift, and enter state 18
+	'false'        shift, and enter state 19
+	'fun'          shift, and enter state 20
+	'if'           shift, and enter state 21
+	'iszero'       shift, and enter state 22
+	'pred'         shift, and enter state 23
+	'succ'         shift, and enter state 24
+	'true'         shift, and enter state 25
+	L_Ident        shift, and enter state 10
+
+	Ident          goto state 11
+	Expr           goto state 47
+	Expr1          goto state 13
+	Expr2          goto state 14
+	Expr3          goto state 15
+
+State 22
+
+	Expr2 -> 'iszero' . Expr3                           (rule 21)
+
+	'('            shift, and enter state 17
+	'0'            shift, and enter state 18
+	'false'        shift, and enter state 19
+	'true'         shift, and enter state 25
+	L_Ident        shift, and enter state 10
+
+	Ident          goto state 11
+	Expr3          goto state 46
+
+State 23
+
+	Expr2 -> 'pred' . Expr3                             (rule 20)
+
+	'('            shift, and enter state 17
+	'0'            shift, and enter state 18
+	'false'        shift, and enter state 19
+	'true'         shift, and enter state 25
+	L_Ident        shift, and enter state 10
+
+	Ident          goto state 11
+	Expr3          goto state 45
+
+State 24
+
+	Expr2 -> 'succ' . Expr3                             (rule 19)
+
+	'('            shift, and enter state 17
+	'0'            shift, and enter state 18
+	'false'        shift, and enter state 19
+	'true'         shift, and enter state 25
+	L_Ident        shift, and enter state 10
+
+	Ident          goto state 11
+	Expr3          goto state 44
+
+State 25
+
+	Expr3 -> 'true' .                                   (rule 23)
+
+	'('            reduce using rule 23
+	')'            reduce using rule 23
+	'0'            reduce using rule 23
+	':'            reduce using rule 23
+	';'            reduce using rule 23
+	'else'         reduce using rule 23
+	'false'        reduce using rule 23
+	'iszero'       reduce using rule 23
+	'pred'         reduce using rule 23
+	'succ'         reduce using rule 23
+	'then'         reduce using rule 23
+	'true'         reduce using rule 23
+	'}'            reduce using rule 23
+	L_Ident        reduce using rule 23
+	%eof           reduce using rule 23
+
+
+State 26
+
+	%start_pType1 -> Type1 .                            (rule 7)
+
+	%eof           accept
+
+
+State 27
+
+	Type1 -> '(' . Type ')'                             (rule 32)
+
+	'('            shift, and enter state 27
+	'Bool'         shift, and enter state 28
+	'Nat'          shift, and enter state 29
+
+	Type           goto state 43
+	Type1          goto state 31
+
+State 28
+
+	Type1 -> 'Bool' .                                   (rule 30)
 
 	')'            reduce using rule 30
 	'->'           reduce using rule 30
 	%eof           reduce using rule 30
 
 
-State 53
+State 29
 
-	Type -> Type1 '->' Type .                           (rule 26)
+	Type1 -> 'Nat' .                                    (rule 31)
 
-	')'            reduce using rule 26
-	%eof           reduce using rule 26
+	')'            reduce using rule 31
+	'->'           reduce using rule 31
+	%eof           reduce using rule 31
 
 
-State 54
+State 30
 
-	ListExpr -> Expr ';' ListExpr .                     (rule 12)
+	%start_pType -> Type .                              (rule 6)
 
+	%eof           accept
+
+
+State 31
+
+	Type -> Type1 . '->' Type                           (rule 28)
+	Type -> Type1 .                                     (rule 29)
+
+	')'            reduce using rule 29
+	'->'           shift, and enter state 42
+	%eof           reduce using rule 29
+
+
+State 32
+
+	%start_pExpr3 -> Expr3 .                            (rule 5)
+
+	%eof           accept
+
+
+State 33
+
+	%start_pExpr2 -> Expr2 .                            (rule 4)
+
+	%eof           accept
+
+
+State 34
+
+	%start_pExpr1 -> Expr1 .                            (rule 3)
+	Expr1 -> Expr1 . Expr2                              (rule 17)
+
+	'('            shift, and enter state 17
+	'0'            shift, and enter state 18
+	'false'        shift, and enter state 19
+	'iszero'       shift, and enter state 22
+	'pred'         shift, and enter state 23
+	'succ'         shift, and enter state 24
+	'true'         shift, and enter state 25
+	L_Ident        shift, and enter state 10
+	%eof           accept
+
+	Ident          goto state 11
+	Expr2          goto state 41
+	Expr3          goto state 15
+
+State 35
+
+	%start_pExpr -> Expr .                              (rule 2)
+
+	%eof           accept
+
+
+State 36
+
+	%start_pListExpr -> ListExpr .                      (rule 1)
+
+	%eof           accept
+
+
+State 37
+
+	ListExpr -> Expr .                                  (rule 12)
+	ListExpr -> Expr . ';' ListExpr                     (rule 13)
+
+	';'            shift, and enter state 40
 	%eof           reduce using rule 12
 
 
-State 55
+State 38
 
-	Expr1 -> 'if' Expr1 'then' Expr1 . 'else' Expr1     (rule 15)
+	%start_pProgram -> Program .                        (rule 0)
 
-	'else'         shift, and enter state 58
-
-
-State 56
-
-	Expr1 -> 'fun' '(' Ident ':' . Type ')' '{' 'return' Expr '}'    (rule 19)
-
-	'('            shift, and enter state 25
-	'Bool'         shift, and enter state 26
-	'Nat'          shift, and enter state 27
-
-	Type           goto state 57
-	Type1          goto state 29
-
-State 57
-
-	Expr1 -> 'fun' '(' Ident ':' Type . ')' '{' 'return' Expr '}'    (rule 19)
-
-	')'            shift, and enter state 60
+	%eof           accept
 
 
-State 58
+State 39
 
-	Expr1 -> 'if' Expr1 'then' Expr1 'else' . Expr1     (rule 15)
+	Program -> ListExpr .                               (rule 10)
 
-	'('            shift, and enter state 15
-	'0'            shift, and enter state 16
-	'false'        shift, and enter state 17
-	'fun'          shift, and enter state 18
-	'if'           shift, and enter state 19
-	'iszero'       shift, and enter state 20
-	'pred'         shift, and enter state 21
-	'succ'         shift, and enter state 22
-	'true'         shift, and enter state 23
-	L_Ident        shift, and enter state 9
-
-	Ident          goto state 10
-	Expr1          goto state 59
-	Expr2          goto state 13
-
-State 59
-
-	Expr1 -> 'if' Expr1 'then' Expr1 'else' Expr1 .     (rule 15)
-
-	'('            reduce using rule 15
-	')'            reduce using rule 15
-	'0'            reduce using rule 15
-	':'            reduce using rule 15
-	';'            reduce using rule 15
-	'else'         reduce using rule 15
-	'false'        reduce using rule 15
-	'fun'          reduce using rule 15
-	'if'           reduce using rule 15
-	'iszero'       reduce using rule 15
-	'pred'         reduce using rule 15
-	'succ'         reduce using rule 15
-	'then'         reduce using rule 15
-	'true'         reduce using rule 15
-	'}'            reduce using rule 15
-	L_Ident        reduce using rule 15
-	%eof           reduce using rule 15
+	%eof           reduce using rule 10
 
 
-State 60
+State 40
 
-	Expr1 -> 'fun' '(' Ident ':' Type ')' . '{' 'return' Expr '}'    (rule 19)
+	ListExpr -> Expr ';' . ListExpr                     (rule 13)
 
-	'{'            shift, and enter state 61
+	'('            shift, and enter state 17
+	'0'            shift, and enter state 18
+	'false'        shift, and enter state 19
+	'fun'          shift, and enter state 20
+	'if'           shift, and enter state 21
+	'iszero'       shift, and enter state 22
+	'pred'         shift, and enter state 23
+	'succ'         shift, and enter state 24
+	'true'         shift, and enter state 25
+	L_Ident        shift, and enter state 10
+	%eof           reduce using rule 11
+
+	Ident          goto state 11
+	ListExpr       goto state 57
+	Expr           goto state 37
+	Expr1          goto state 13
+	Expr2          goto state 14
+	Expr3          goto state 15
+
+State 41
+
+	Expr1 -> Expr1 Expr2 .                              (rule 17)
+
+	'('            reduce using rule 17
+	')'            reduce using rule 17
+	'0'            reduce using rule 17
+	':'            reduce using rule 17
+	';'            reduce using rule 17
+	'else'         reduce using rule 17
+	'false'        reduce using rule 17
+	'iszero'       reduce using rule 17
+	'pred'         reduce using rule 17
+	'succ'         reduce using rule 17
+	'then'         reduce using rule 17
+	'true'         reduce using rule 17
+	'}'            reduce using rule 17
+	L_Ident        reduce using rule 17
+	%eof           reduce using rule 17
 
 
-State 61
+State 42
 
-	Expr1 -> 'fun' '(' Ident ':' Type ')' '{' . 'return' Expr '}'    (rule 19)
+	Type -> Type1 '->' . Type                           (rule 28)
 
-	'return'       shift, and enter state 62
+	'('            shift, and enter state 27
+	'Bool'         shift, and enter state 28
+	'Nat'          shift, and enter state 29
+
+	Type           goto state 56
+	Type1          goto state 31
+
+State 43
+
+	Type1 -> '(' Type . ')'                             (rule 32)
+
+	')'            shift, and enter state 55
 
 
-State 62
+State 44
 
-	Expr1 -> 'fun' '(' Ident ':' Type ')' '{' 'return' . Expr '}'    (rule 19)
-
-	'('            shift, and enter state 15
-	'0'            shift, and enter state 16
-	'false'        shift, and enter state 17
-	'fun'          shift, and enter state 18
-	'if'           shift, and enter state 19
-	'iszero'       shift, and enter state 20
-	'pred'         shift, and enter state 21
-	'succ'         shift, and enter state 22
-	'true'         shift, and enter state 23
-	L_Ident        shift, and enter state 9
-
-	Ident          goto state 10
-	Expr           goto state 63
-	Expr1          goto state 12
-	Expr2          goto state 13
-
-State 63
-
-	Expr -> Expr . Expr1                                (rule 13)
-	Expr1 -> 'fun' '(' Ident ':' Type ')' '{' 'return' Expr . '}'    (rule 19)
-
-	'('            shift, and enter state 15
-	'0'            shift, and enter state 16
-	'false'        shift, and enter state 17
-	'fun'          shift, and enter state 18
-	'if'           shift, and enter state 19
-	'iszero'       shift, and enter state 20
-	'pred'         shift, and enter state 21
-	'succ'         shift, and enter state 22
-	'true'         shift, and enter state 23
-	'}'            shift, and enter state 64
-	L_Ident        shift, and enter state 9
-
-	Ident          goto state 10
-	Expr1          goto state 37
-	Expr2          goto state 13
-
-State 64
-
-	Expr1 -> 'fun' '(' Ident ':' Type ')' '{' 'return' Expr '}' .    (rule 19)
+	Expr2 -> 'succ' Expr3 .                             (rule 19)
 
 	'('            reduce using rule 19
 	')'            reduce using rule 19
@@ -1028,8 +728,6 @@ State 64
 	';'            reduce using rule 19
 	'else'         reduce using rule 19
 	'false'        reduce using rule 19
-	'fun'          reduce using rule 19
-	'if'           reduce using rule 19
 	'iszero'       reduce using rule 19
 	'pred'         reduce using rule 19
 	'succ'         reduce using rule 19
@@ -1040,10 +738,279 @@ State 64
 	%eof           reduce using rule 19
 
 
+State 45
+
+	Expr2 -> 'pred' Expr3 .                             (rule 20)
+
+	'('            reduce using rule 20
+	')'            reduce using rule 20
+	'0'            reduce using rule 20
+	':'            reduce using rule 20
+	';'            reduce using rule 20
+	'else'         reduce using rule 20
+	'false'        reduce using rule 20
+	'iszero'       reduce using rule 20
+	'pred'         reduce using rule 20
+	'succ'         reduce using rule 20
+	'then'         reduce using rule 20
+	'true'         reduce using rule 20
+	'}'            reduce using rule 20
+	L_Ident        reduce using rule 20
+	%eof           reduce using rule 20
+
+
+State 46
+
+	Expr2 -> 'iszero' Expr3 .                           (rule 21)
+
+	'('            reduce using rule 21
+	')'            reduce using rule 21
+	'0'            reduce using rule 21
+	':'            reduce using rule 21
+	';'            reduce using rule 21
+	'else'         reduce using rule 21
+	'false'        reduce using rule 21
+	'iszero'       reduce using rule 21
+	'pred'         reduce using rule 21
+	'succ'         reduce using rule 21
+	'then'         reduce using rule 21
+	'true'         reduce using rule 21
+	'}'            reduce using rule 21
+	L_Ident        reduce using rule 21
+	%eof           reduce using rule 21
+
+
+State 47
+
+	Expr -> 'if' Expr . 'then' Expr 'else' Expr         (rule 14)
+
+	'then'         shift, and enter state 54
+
+
+State 48
+
+	Expr -> 'fun' '(' . Ident ':' Type ')' '{' 'return' Expr '}'    (rule 15)
+
+	L_Ident        shift, and enter state 10
+
+	Ident          goto state 53
+
+State 49
+
+	Expr3 -> '(' Expr . ')'                             (rule 27)
+
+	')'            shift, and enter state 52
+
+
+State 50
+
+	Typing -> Expr ':' . Type                           (rule 33)
+
+	'('            shift, and enter state 27
+	'Bool'         shift, and enter state 28
+	'Nat'          shift, and enter state 29
+
+	Type           goto state 51
+	Type1          goto state 31
+
+State 51
+
+	Typing -> Expr ':' Type .                           (rule 33)
+
+	%eof           reduce using rule 33
+
+
+State 52
+
+	Expr3 -> '(' Expr ')' .                             (rule 27)
+
+	'('            reduce using rule 27
+	')'            reduce using rule 27
+	'0'            reduce using rule 27
+	':'            reduce using rule 27
+	';'            reduce using rule 27
+	'else'         reduce using rule 27
+	'false'        reduce using rule 27
+	'iszero'       reduce using rule 27
+	'pred'         reduce using rule 27
+	'succ'         reduce using rule 27
+	'then'         reduce using rule 27
+	'true'         reduce using rule 27
+	'}'            reduce using rule 27
+	L_Ident        reduce using rule 27
+	%eof           reduce using rule 27
+
+
+State 53
+
+	Expr -> 'fun' '(' Ident . ':' Type ')' '{' 'return' Expr '}'    (rule 15)
+
+	':'            shift, and enter state 59
+
+
+State 54
+
+	Expr -> 'if' Expr 'then' . Expr 'else' Expr         (rule 14)
+
+	'('            shift, and enter state 17
+	'0'            shift, and enter state 18
+	'false'        shift, and enter state 19
+	'fun'          shift, and enter state 20
+	'if'           shift, and enter state 21
+	'iszero'       shift, and enter state 22
+	'pred'         shift, and enter state 23
+	'succ'         shift, and enter state 24
+	'true'         shift, and enter state 25
+	L_Ident        shift, and enter state 10
+
+	Ident          goto state 11
+	Expr           goto state 58
+	Expr1          goto state 13
+	Expr2          goto state 14
+	Expr3          goto state 15
+
+State 55
+
+	Type1 -> '(' Type ')' .                             (rule 32)
+
+	')'            reduce using rule 32
+	'->'           reduce using rule 32
+	%eof           reduce using rule 32
+
+
+State 56
+
+	Type -> Type1 '->' Type .                           (rule 28)
+
+	')'            reduce using rule 28
+	%eof           reduce using rule 28
+
+
+State 57
+
+	ListExpr -> Expr ';' ListExpr .                     (rule 13)
+
+	%eof           reduce using rule 13
+
+
+State 58
+
+	Expr -> 'if' Expr 'then' Expr . 'else' Expr         (rule 14)
+
+	'else'         shift, and enter state 61
+
+
+State 59
+
+	Expr -> 'fun' '(' Ident ':' . Type ')' '{' 'return' Expr '}'    (rule 15)
+
+	'('            shift, and enter state 27
+	'Bool'         shift, and enter state 28
+	'Nat'          shift, and enter state 29
+
+	Type           goto state 60
+	Type1          goto state 31
+
+State 60
+
+	Expr -> 'fun' '(' Ident ':' Type . ')' '{' 'return' Expr '}'    (rule 15)
+
+	')'            shift, and enter state 63
+
+
+State 61
+
+	Expr -> 'if' Expr 'then' Expr 'else' . Expr         (rule 14)
+
+	'('            shift, and enter state 17
+	'0'            shift, and enter state 18
+	'false'        shift, and enter state 19
+	'fun'          shift, and enter state 20
+	'if'           shift, and enter state 21
+	'iszero'       shift, and enter state 22
+	'pred'         shift, and enter state 23
+	'succ'         shift, and enter state 24
+	'true'         shift, and enter state 25
+	L_Ident        shift, and enter state 10
+
+	Ident          goto state 11
+	Expr           goto state 62
+	Expr1          goto state 13
+	Expr2          goto state 14
+	Expr3          goto state 15
+
+State 62
+
+	Expr -> 'if' Expr 'then' Expr 'else' Expr .         (rule 14)
+
+	')'            reduce using rule 14
+	':'            reduce using rule 14
+	';'            reduce using rule 14
+	'else'         reduce using rule 14
+	'then'         reduce using rule 14
+	'}'            reduce using rule 14
+	%eof           reduce using rule 14
+
+
+State 63
+
+	Expr -> 'fun' '(' Ident ':' Type ')' . '{' 'return' Expr '}'    (rule 15)
+
+	'{'            shift, and enter state 64
+
+
+State 64
+
+	Expr -> 'fun' '(' Ident ':' Type ')' '{' . 'return' Expr '}'    (rule 15)
+
+	'return'       shift, and enter state 65
+
+
+State 65
+
+	Expr -> 'fun' '(' Ident ':' Type ')' '{' 'return' . Expr '}'    (rule 15)
+
+	'('            shift, and enter state 17
+	'0'            shift, and enter state 18
+	'false'        shift, and enter state 19
+	'fun'          shift, and enter state 20
+	'if'           shift, and enter state 21
+	'iszero'       shift, and enter state 22
+	'pred'         shift, and enter state 23
+	'succ'         shift, and enter state 24
+	'true'         shift, and enter state 25
+	L_Ident        shift, and enter state 10
+
+	Ident          goto state 11
+	Expr           goto state 66
+	Expr1          goto state 13
+	Expr2          goto state 14
+	Expr3          goto state 15
+
+State 66
+
+	Expr -> 'fun' '(' Ident ':' Type ')' '{' 'return' Expr . '}'    (rule 15)
+
+	'}'            shift, and enter state 67
+
+
+State 67
+
+	Expr -> 'fun' '(' Ident ':' Type ')' '{' 'return' Expr '}' .    (rule 15)
+
+	')'            reduce using rule 15
+	':'            reduce using rule 15
+	';'            reduce using rule 15
+	'else'         reduce using rule 15
+	'then'         reduce using rule 15
+	'}'            reduce using rule 15
+	%eof           reduce using rule 15
+
+
 -----------------------------------------------------------------------------
 Grammar Totals
 -----------------------------------------------------------------------------
-Number of rules: 32
+Number of rules: 34
 Number of terminals: 21
-Number of non-terminals: 17
-Number of states: 65
+Number of non-terminals: 19
+Number of states: 68

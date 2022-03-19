@@ -44,15 +44,16 @@ All other symbols are terminals.
   | //[Expr]// | -> | **eps**
   |  |  **|**  | //Expr//
   |  |  **|**  | //Expr// ``;`` //[Expr]//
-  | //Expr// | -> | //Expr// //Expr1//
-  |  |  **|**  | //Expr1//
-  | //Expr1// | -> | ``if`` //Expr1// ``then`` //Expr1// ``else`` //Expr1//
-  |  |  **|**  | ``succ`` //Expr2//
-  |  |  **|**  | ``pred`` //Expr2//
-  |  |  **|**  | ``iszero`` //Expr2//
+  | //Expr// | -> | ``if`` //Expr// ``then`` //Expr// ``else`` //Expr//
   |  |  **|**  | ``fun`` ``(`` //Ident// ``:`` //Type// ``)`` ``{`` ``return`` //Expr// ``}``
+  |  |  **|**  | //Expr1//
+  | //Expr1// | -> | //Expr1// //Expr2//
   |  |  **|**  | //Expr2//
-  | //Expr2// | -> | ``true``
+  | //Expr2// | -> | ``succ`` //Expr3//
+  |  |  **|**  | ``pred`` //Expr3//
+  |  |  **|**  | ``iszero`` //Expr3//
+  |  |  **|**  | //Expr3//
+  | //Expr3// | -> | ``true``
   |  |  **|**  | ``false``
   |  |  **|**  | ``0``
   |  |  **|**  | //Ident//

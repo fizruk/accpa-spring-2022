@@ -9,6 +9,7 @@ module Syntax.Normal.Par
   , pExpr
   , pExpr1
   , pExpr2
+  , pExpr3
   , pType
   , pType1
   , pTyping
@@ -26,6 +27,7 @@ import Syntax.Normal.Lex
 %name pExpr Expr
 %name pExpr1 Expr1
 %name pExpr2 Expr2
+%name pExpr3 Expr3
 %name pType Type
 %name pType1 Type1
 %name pTyping Typing
@@ -69,19 +71,22 @@ ListExpr : {- empty -} { [] }
          | Expr ';' ListExpr { (:) $1 $3 }
 
 Expr :: { Syntax.Normal.Abs.Expr }
-Expr : Expr Expr1 { Syntax.Normal.Abs.Application $1 $2 }
+Expr : 'if' Expr 'then' Expr 'else' Expr { Syntax.Normal.Abs.If $2 $4 $6 }
+     | 'fun' '(' Ident ':' Type ')' '{' 'return' Expr '}' { Syntax.Normal.Abs.Abstraction $3 $5 $9 }
      | Expr1 { $1 }
 
 Expr1 :: { Syntax.Normal.Abs.Expr }
-Expr1 : 'if' Expr1 'then' Expr1 'else' Expr1 { Syntax.Normal.Abs.If $2 $4 $6 }
-      | 'succ' Expr2 { Syntax.Normal.Abs.Succ $2 }
-      | 'pred' Expr2 { Syntax.Normal.Abs.Pred $2 }
-      | 'iszero' Expr2 { Syntax.Normal.Abs.IsZero $2 }
-      | 'fun' '(' Ident ':' Type ')' '{' 'return' Expr '}' { Syntax.Normal.Abs.Abstraction $3 $5 $9 }
+Expr1 : Expr1 Expr2 { Syntax.Normal.Abs.Application $1 $2 }
       | Expr2 { $1 }
 
 Expr2 :: { Syntax.Normal.Abs.Expr }
-Expr2 : 'true' { Syntax.Normal.Abs.ConstTrue }
+Expr2 : 'succ' Expr3 { Syntax.Normal.Abs.Succ $2 }
+      | 'pred' Expr3 { Syntax.Normal.Abs.Pred $2 }
+      | 'iszero' Expr3 { Syntax.Normal.Abs.IsZero $2 }
+      | Expr3 { $1 }
+
+Expr3 :: { Syntax.Normal.Abs.Expr }
+Expr3 : 'true' { Syntax.Normal.Abs.ConstTrue }
       | 'false' { Syntax.Normal.Abs.ConstFalse }
       | '0' { Syntax.Normal.Abs.ConstZero }
       | Ident { Syntax.Normal.Abs.Var $1 }

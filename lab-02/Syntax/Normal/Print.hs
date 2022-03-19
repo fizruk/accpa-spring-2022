@@ -119,16 +119,16 @@ instance Print [Syntax.Normal.Abs.Expr] where
 
 instance Print Syntax.Normal.Abs.Expr where
   prt i = \case
-    Syntax.Normal.Abs.Application expr1 expr2 -> prPrec i 0 (concatD [prt 0 expr1, prt 1 expr2])
-    Syntax.Normal.Abs.If expr1 expr2 expr3 -> prPrec i 1 (concatD [doc (showString "if"), prt 1 expr1, doc (showString "then"), prt 1 expr2, doc (showString "else"), prt 1 expr3])
-    Syntax.Normal.Abs.Succ expr -> prPrec i 1 (concatD [doc (showString "succ"), prt 2 expr])
-    Syntax.Normal.Abs.Pred expr -> prPrec i 1 (concatD [doc (showString "pred"), prt 2 expr])
-    Syntax.Normal.Abs.IsZero expr -> prPrec i 1 (concatD [doc (showString "iszero"), prt 2 expr])
-    Syntax.Normal.Abs.Abstraction id_ type_ expr -> prPrec i 1 (concatD [doc (showString "fun"), doc (showString "("), prt 0 id_, doc (showString ":"), prt 0 type_, doc (showString ")"), doc (showString "{"), doc (showString "return"), prt 0 expr, doc (showString "}")])
-    Syntax.Normal.Abs.ConstTrue -> prPrec i 2 (concatD [doc (showString "true")])
-    Syntax.Normal.Abs.ConstFalse -> prPrec i 2 (concatD [doc (showString "false")])
-    Syntax.Normal.Abs.ConstZero -> prPrec i 2 (concatD [doc (showString "0")])
-    Syntax.Normal.Abs.Var id_ -> prPrec i 2 (concatD [prt 0 id_])
+    Syntax.Normal.Abs.If expr1 expr2 expr3 -> prPrec i 0 (concatD [doc (showString "if"), prt 0 expr1, doc (showString "then"), prt 0 expr2, doc (showString "else"), prt 0 expr3])
+    Syntax.Normal.Abs.Abstraction id_ type_ expr -> prPrec i 0 (concatD [doc (showString "fun"), doc (showString "("), prt 0 id_, doc (showString ":"), prt 0 type_, doc (showString ")"), doc (showString "{"), doc (showString "return"), prt 0 expr, doc (showString "}")])
+    Syntax.Normal.Abs.Application expr1 expr2 -> prPrec i 1 (concatD [prt 1 expr1, prt 2 expr2])
+    Syntax.Normal.Abs.Succ expr -> prPrec i 2 (concatD [doc (showString "succ"), prt 3 expr])
+    Syntax.Normal.Abs.Pred expr -> prPrec i 2 (concatD [doc (showString "pred"), prt 3 expr])
+    Syntax.Normal.Abs.IsZero expr -> prPrec i 2 (concatD [doc (showString "iszero"), prt 3 expr])
+    Syntax.Normal.Abs.ConstTrue -> prPrec i 3 (concatD [doc (showString "true")])
+    Syntax.Normal.Abs.ConstFalse -> prPrec i 3 (concatD [doc (showString "false")])
+    Syntax.Normal.Abs.ConstZero -> prPrec i 3 (concatD [doc (showString "0")])
+    Syntax.Normal.Abs.Var id_ -> prPrec i 3 (concatD [prt 0 id_])
   prtList _ [] = concatD []
   prtList _ [x] = concatD [prt 0 x]
   prtList _ (x:xs) = concatD [prt 0 x, doc (showString ";"), prt 0 xs]

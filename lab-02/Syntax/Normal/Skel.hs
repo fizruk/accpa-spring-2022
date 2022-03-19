@@ -23,12 +23,12 @@ transProgram x = case x of
 
 transExpr :: Syntax.Normal.Abs.Expr -> Result
 transExpr x = case x of
-  Syntax.Normal.Abs.Application expr1 expr2 -> failure x
   Syntax.Normal.Abs.If expr1 expr2 expr3 -> failure x
+  Syntax.Normal.Abs.Abstraction ident type_ expr -> failure x
+  Syntax.Normal.Abs.Application expr1 expr2 -> failure x
   Syntax.Normal.Abs.Succ expr -> failure x
   Syntax.Normal.Abs.Pred expr -> failure x
   Syntax.Normal.Abs.IsZero expr -> failure x
-  Syntax.Normal.Abs.Abstraction ident type_ expr -> failure x
   Syntax.Normal.Abs.ConstTrue -> failure x
   Syntax.Normal.Abs.ConstFalse -> failure x
   Syntax.Normal.Abs.ConstZero -> failure x
