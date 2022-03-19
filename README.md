@@ -6,7 +6,7 @@ Each demonstration occurs over the course of one lab:
 
 - [Lab 1. Untyped expressions with functions.](lab-01/)
 - [Lab 2. Simply typed expressions with functions.](lab-02/)
-- Lab 3. Simple extensions: `let`-bindings and records.
+- [Lab 3. Simple extensions: `let`-bindings and records.](lab-03/)
 - Lab 4. Simple extensions: variants and lists.
 - Lab 5. _Reserved for team projects._
 - Lab 6. References and exceptions.
