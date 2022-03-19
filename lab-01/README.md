@@ -2,7 +2,7 @@
 
 In this lab, we discuss implementation of an interpreter for simple untyped expressions with functions, relying on intermediate nameless representation to deal with possible name conflicts.
 
-[![Description of the syntax.](lab-01/images/normal-bnf.png)](lab-01/Syntax/Normal.pdf)
+[![Description of the syntax.](images/normal-bnf.png)](Syntax/Normal.pdf)
 
 ## Project structure
 
