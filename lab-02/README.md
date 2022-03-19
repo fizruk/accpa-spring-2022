@@ -1,6 +1,13 @@
 # Lab 2. Simply typed expressions and functions
 
-In this lab, we discuss implementation of an interpreter for simple untyped expressions with functions, relying on intermediate nameless representation to deal with possible name conflicts.
+In this lab, we discuss implementation of an interpreter for simply typed expressions with functions, relying on intermediate nameless representation to deal with possible name conflicts when evaluating.
+
+Supported types:
+- `Bool` — type of booleans;
+- `Nat` — type of natural numbers;
+- `A -> B` — type of functions from `A` to `B` (where `A` and `B` are both types).
+
+The language is **total**: all well-typed programs terminate.
 
 ## Project structure
 
@@ -10,11 +17,13 @@ Module `Convert.hs` describes conversion between normal and nameless representat
 
 Module `Eval/Nameless.hs` defines evaluation of nameless terms. This implementation together with necessary conversions is used to define evaluation of normal terms in `Eval.hs` module.
 
-Finally, `interpreter.hs` is the main module, that performs parsing of the standard input, evaluating every expression, and pretty-printing the result.
+Module `TypeCheck.hs` defines typechecking for normal terms.
+
+Finally, `interpreter.hs` is the main module, that performs parsing of the standard input, typechecking and evaluating every expression, and pretty-printing the result.
 
 ## How to use
 
-The interpreter reads standard input, parses a series of expressions separated by a semicolon (`;`), evaluates each expression and prints out the results.
+The interpreter reads standard input, parses a series of expressions separated by a semicolon (`;`), typechecks and evaluates each expression and prints out the results.
 
 ```sh
 echo "(fun (x : Nat) { return (pred x) })(succ (succ 0))" | ./interpreter
