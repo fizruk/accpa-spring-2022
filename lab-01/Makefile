@@ -1,21 +1,21 @@
 all: Syntax/Normal/Test Syntax/Nameless/Test
 
-pdf:	Syntax/Normal.pdf Syntax/Nameless.pdf
+pdf:	doc/Syntax/Normal.pdf doc/Syntax/Nameless.pdf
 
-Syntax/Normal.pdf: Syntax/Normal.tex
-	latexmk -output-directory=Syntax/ -pdflatex Syntax/Normal.tex
-Syntax/Nameless.pdf: Syntax/Nameless.tex
-	latexmk -output-directory=Syntax/ -pdflatex Syntax/Nameless.tex
+doc/Syntax/Normal.pdf: doc/Syntax/Normal.tex
+	latexmk -output-directory=doc/Syntax/ -pdflatex doc/Syntax/Normal.tex
+doc/Syntax/Nameless.pdf: doc/Syntax/Nameless.tex
+	latexmk -output-directory=doc/Syntax/ -pdflatex doc/Syntax/Nameless.tex
 
-Syntax/Normal.tex: Syntax/Normal.cf
-	bnfc --latex Syntax/Normal.cf -o Syntax/
-Syntax/Nameless.tex: Syntax/Nameless.cf
-	bnfc --latex Syntax/Nameless.cf -o Syntax/
+doc/Syntax/Normal.tex: Syntax/Normal.cf
+	bnfc --latex Syntax/Normal.cf -o doc/Syntax/
+doc/Syntax/Nameless.tex: Syntax/Nameless.cf
+	bnfc --latex Syntax/Nameless.cf -o doc/Syntax/
 
 clean:
 	make --makefile=Syntax/MakefileNormal clean
 	make --makefile=Syntax/MakefileNameless clean
-	cd Syntax && (latexmk -c; cd ..)
+	cd doc/Syntax && (latexmk -c; cd ../..)
 
 Syntax/Normal/Test: Syntax/Normal.cf
 	bnfc -d Syntax/Normal.cf -p Syntax --makefile=Syntax/MakefileNormal

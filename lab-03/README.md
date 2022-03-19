@@ -96,4 +96,4 @@ Assuming you have `latexmk` and `pdflatex` installed, you can simply run
 make pdf
 ```
 
-This will generate PDF files `Syntax/Normal.pdf` and `Syntax/Nameless.pdf`.
+This will generate PDF files `doc/Syntax/Normal.pdf` and `doc/Syntax/Nameless.pdf`.

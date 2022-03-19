@@ -2,7 +2,7 @@
 
 In this lab, we discuss implementation of an interpreter for simple untyped expressions with functions, relying on intermediate nameless representation to deal with possible name conflicts.
 
-[![Description of the syntax.](images/normal-bnf.png)](Syntax/Normal.pdf)
+[![Description of the syntax.](images/normal-bnf.png)](doc/Syntax/Normal.pdf)
 
 ## Project structure
 
@@ -83,4 +83,4 @@ Assuming you have `latexmk` and `pdflatex` installed, you can simply run
 make pdf
 ```
 
-This will generate PDF files `Syntax/Normal.pdf` and `Syntax/Nameless.pdf`.
+This will generate PDF files `doc/Syntax/Normal.pdf` and `doc/Syntax/Nameless.pdf`.
