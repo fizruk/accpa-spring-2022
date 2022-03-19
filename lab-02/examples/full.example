@@ -1,0 +1,12 @@
+// identity on numbers
+fun (x : Nat) { return x } ;
+
+// identity applied to 0
+(fun (x : Nat) { return x })(0) ;
+
+// applying a function to an argument twice
+fun (f : Nat -> Nat) {
+  return fun(x : Nat) {
+    return f (f x)
+  }
+} ;

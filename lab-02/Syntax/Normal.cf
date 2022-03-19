@@ -1,0 +1,34 @@
+comment "//" ;
+comment "/*" "*/" ;
+
+ProgramExprs.  Program ::= [Expr] ;
+
+separator Expr ";" ;
+
+If.           Expr ::= "if" Expr "then" Expr "else" Expr ;
+Abstraction.  Expr ::= "fun" "(" Ident ":" Type ")" "{" "return" Expr "}" ;
+
+Application.  Expr1 ::= Expr1 Expr2 ;
+
+Succ.         Expr2 ::= "succ" Expr3 ;
+Pred.         Expr2 ::= "pred" Expr3 ;
+IsZero.       Expr2 ::= "iszero" Expr3 ;
+
+ConstTrue.    Expr3 ::= "true" ;
+ConstFalse.   Expr3 ::= "false" ;
+ConstZero.    Expr3 ::= "0" ;
+Var.          Expr3 ::= Ident ;
+
+_. Expr   ::= Expr1 ;
+_. Expr1  ::= Expr2 ;
+_. Expr2  ::= Expr3 ;
+_. Expr3  ::= "(" Expr ")" ;
+
+FunType.    Type ::= Type1 "->" Type ;
+BoolType.   Type1 ::= "Bool" ;
+NatType.    Type1 ::= "Nat" ;
+
+_.  Type  ::= Type1 ;
+_.  Type1 ::= "(" Type ")" ;
+
+Typing.     Typing  ::= Expr ":" Type ;
