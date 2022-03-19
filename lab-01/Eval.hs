@@ -1,8 +1,8 @@
+{-# OPTIONS_GHC -Wall #-}
 module Eval where
 
 import           Convert
-import qualified Eval.Nameless       as Nameless
-import qualified Syntax.Nameless.Abs as Nameless
+import qualified Eval.Nameless     as Nameless
 import           Syntax.Normal.Abs
 
 evalStep :: Expr -> Maybe Expr

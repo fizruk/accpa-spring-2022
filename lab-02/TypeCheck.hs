@@ -1,7 +1,6 @@
+{-# OPTIONS_GHC -Wall -fno-warn-unused-do-bind #-}
 module TypeCheck where
 
-import           Convert
-import qualified Syntax.Nameless.Abs as Nameless
 import           Syntax.Normal.Abs
 import           Syntax.Normal.Print (printTree)
 

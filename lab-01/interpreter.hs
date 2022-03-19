@@ -1,11 +1,10 @@
+{-# OPTIONS_GHC -Wall #-}
 module Main where
 
-import           Convert
 import           Eval
-import qualified Syntax.Nameless.Print as Nameless
-import           Syntax.Normal.Abs     (Program (..))
-import           Syntax.Normal.Par     (myLexer, pProgram)
-import           Syntax.Normal.Print   (printTree)
+import           Syntax.Normal.Abs   (Program (..))
+import           Syntax.Normal.Par   (myLexer, pProgram)
+import           Syntax.Normal.Print (printTree)
 
 main :: IO ()
 main = do
