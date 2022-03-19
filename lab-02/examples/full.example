@@ -11,10 +11,29 @@ fun (f : Nat -> Nat) {
   }
 } ;
 
-// applying a function to an argument twice
+// Type Error: type mismatch
 fun (f : Nat -> Bool) {
   return fun(x : Nat) {
     return f (f x)
   }
 } ;
 
+// Successful typechecking example
+fun (f : Nat -> Bool) {
+  return fun(x : Nat) {
+    return f (if (f x) then succ 0 else 0)
+  }
+} ;
+
+// Type Error: expected function type
+fun (f : Nat -> Bool) {
+  return f 0 true
+} ;
+
+
+// Error: Undefined variable
+fun (f : Nat -> Bool -> Nat -> Bool) {
+  return fun(x : Nat) {
+    return f x y x
+  }
+}
