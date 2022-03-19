@@ -2,6 +2,8 @@
 
 In this lab, we discuss implementation of an interpreter for simple untyped expressions with functions, relying on intermediate nameless representation to deal with possible name conflicts.
 
+[![Description of the syntax.](lab-01/images/normal-bnf.png)](lab-01/Syntax/Normal.pdf)
+
 ## Project structure
 
 Syntax for normal and nameless representation of terms is defined using a labelled BNF in files `Syntax/Normal.cf` and `Syntax/Nameless.cf` correspondingly. BNF converter tool is used to generate parser, abstract syntax, and pretty printer automatically.
@@ -71,3 +73,14 @@ stack ghc interpreter.hs
 ```
 
 This should generate an executable `./interpreter` that you can now use to interpret untyped expressions with functions.
+
+### Generating the PDF with syntax description
+
+Run BNF converter with `--latex` option and use `pdflatex` or `latexmk` to compile a PDF.
+Assuming you have `latexmk` and `pdflatex` installed, you can simply run
+
+```sh
+make pdf
+```
+
+This will generate PDF files `Syntax/Normal.pdf` and `Syntax/Nameless.pdf`.
