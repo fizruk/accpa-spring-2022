@@ -1,0 +1,160 @@
+// identity applied to 0
+(fun (x) { return x })(0) ;
+
+// apply succ twice to 0
+((fun (f) {
+  return fun(x) {
+    return (f)((f)(x))
+  }
+}
+)
+(fun (n) { return succ n }))  // succ turned into a function
+(0) ;
+
+// apply succ 2^3 times to 0
+(((fun (f) {
+  return fun (x) {
+    // apply f 3 times to x
+    return (f)((f)((f)(x)))
+  }
+})
+(fun (f) {
+  return fun (x) {
+    // apply f 2 times to x
+    return (f)((f)(x))
+  }
+}))
+(fun (n) { return succ n }))  // succ turned into a function
+(0) ;
+
+// add two numbers
+
+// the untyped fixpoint combinator
+(((fun (f) {
+  return
+    (fun (x) { return f (x x) } )
+    (fun (x) { return f (x x) } )
+})
+// recursive definition of addition of numbers
+(fun (add) {
+  return fun (x) {
+    return fun(y) {
+      return
+        if iszero x
+          then y
+          else succ ((add (pred x)) y)
+    }
+  }
+}))
+(succ succ succ 0))       // 3
+(succ succ succ succ 0)   // 4
+;
+
+// multiply two numbers
+
+(((fun (add) { return // assuming addition is defined
+  // the untyped fixpoint combinator
+  ((fun (f) {
+    return
+      (fun (x) { return f (x x) } )
+      (fun (x) { return f (x x) } )
+  })
+  // recursive definition of multiplication of numbers
+  (fun (mult) {
+    return fun (x) {
+      return fun(y) {
+        return
+          if iszero x
+            then 0
+            else if iszero (pred x)
+              then y
+              else (add y) ((mult (pred x)) y)
+      }
+    }
+  }))
+})
+(
+  // definition of addition of numbers
+  // the untyped fixpoint combinator
+  ((fun (f) {
+    return
+      (fun (x) { return f (x x) } )
+      (fun (x) { return f (x x) } )
+  })
+  // recursive definition of addition of numbers
+  (fun (add) {
+    return fun (x) {
+      return fun(y) {
+        return
+          if iszero x
+            then y
+            else succ ((add (pred x)) y)
+      }
+    }
+  }))
+))
+(succ succ succ 0))       // 3
+(succ succ succ succ 0)   // 4
+;
+
+// factorial
+
+((fun (mult) { return // assuming multiplication is defined
+  // the untyped fixpoint combinator
+  ((fun (f) {
+    return
+      (fun (x) { return f (x x) } )
+      (fun (x) { return f (x x) } )
+  })
+  // recursive definition of factorial
+  (fun (factorial) {
+    return fun (n) {
+      return
+        if iszero n
+          then succ 0
+          else (mult n) (factorial (pred n))
+    }
+  }))
+})
+((fun (add) { return // assuming addition is defined
+  // the untyped fixpoint combinator
+  ((fun (f) {
+    return
+      (fun (x) { return f (x x) } )
+      (fun (x) { return f (x x) } )
+  })
+  // recursive definition of multiplication of numbers
+  (fun (mult) {
+    return fun (x) {
+      return fun(y) {
+        return
+          if iszero x
+            then 0
+            else if iszero (pred x)
+              then y
+              else (add y) ((mult (pred x)) y)
+      }
+    }
+  }))
+})
+(
+  // definition of addition of numbers
+  // the untyped fixpoint combinator
+  ((fun (f) {
+    return
+      (fun (x) { return f (x x) } )
+      (fun (x) { return f (x x) } )
+  })
+  // recursive definition of addition of numbers
+  (fun (add) {
+    return fun (x) {
+      return fun(y) {
+        return
+          if iszero x
+            then y
+            else succ ((add (pred x)) y)
+      }
+    }
+  }))
+)))
+(succ succ succ 0) // 3
