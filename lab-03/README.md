@@ -1,5 +1,7 @@
 # Lab 3. Simple extensions: `let`-bindings and records
 
+_Note: the code in this lab is an extension of [Lab 2](../lab-02/)._
+
 In this lab, we discuss implementation of an interpreter for simply typed expressions with functions, extended with `let`-bindings and records.
 
 Supported types:

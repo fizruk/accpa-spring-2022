@@ -1,5 +1,7 @@
 # Lab 4. Simple extensions: variants, lists, and `fix`
 
+_Note: the code in this lab is an extension of [Lab 3](../lab-03/)._
+
 In this lab, we discuss implementation of an interpreter for simply typed expressions with functions, extended with `let`-bindings, records, variants, lists, and a fixpoint combinator.
 
 Supported types:

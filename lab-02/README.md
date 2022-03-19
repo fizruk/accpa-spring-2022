@@ -1,5 +1,7 @@
 # Lab 2. Simply typed expressions and functions
 
+_Note: the code in this lab is an extension of [Lab 1](../lab-01/)._
+
 In this lab, we discuss implementation of an interpreter for simply typed expressions with functions, relying on intermediate nameless representation to deal with possible name conflicts when evaluating.
 
 Supported types:
