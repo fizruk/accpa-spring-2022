@@ -25,3 +25,4 @@ typecheckAndEval :: Expr -> Either String Typing
 typecheckAndEval expr = do
   ty <- typeOf [] expr
   return (Typing (eval expr) ty)
+

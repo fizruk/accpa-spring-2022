@@ -10,3 +10,11 @@ fun (f : Nat -> Nat) {
     return f (f x)
   }
 } ;
+
+// applying a function to an argument twice
+fun (f : Nat -> Bool) {
+  return fun(x : Nat) {
+    return f (f x)
+  }
+} ;
+
