@@ -11,6 +11,7 @@ Supported types:
 - `{ x₁ : T₁, ..., xₙ : Tₙ }` — type of records.
 
 The language is **total**: all well-typed programs terminate.
+The language employs **call-by-name** evaluation strategy.
 
 ## Project structure
 

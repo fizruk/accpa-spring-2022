@@ -13,6 +13,7 @@ Supported types:
 - `[T]` — type of lists.
 
 The language is **not total**.
+The language employs **call-by-name** evaluation strategy.
 
 ## Project structure
 

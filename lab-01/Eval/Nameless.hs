@@ -54,7 +54,12 @@ evalStep expr =
         Nothing  -> Nothing
         Just t1' -> Just (Application t1' t2)
 
-    _ -> Nothing
+    Abstraction _ -> Nothing
+    ConstTrue -> Nothing
+    ConstFalse -> Nothing
+    ConstZero -> Nothing
+    FreeVar _ -> Nothing
+    BoundVar _ -> Nothing
 
 shiftFrom :: Integer -> Expr -> Expr
 shiftFrom k = go

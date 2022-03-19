@@ -54,7 +54,26 @@ evalStep expr =
         Nothing  -> Nothing
         Just t1' -> Just (Application t1' t2)
 
-    _ -> Nothing
+    Let t1 t2 -> Just (substitute (0, t1) t2)
+
+    Dot (Record fields) l -> lookupField l fields
+    Dot t l ->
+      case evalStep t of
+        Just t' -> Just (Dot t' l)
+        Nothing -> Nothing
+
+    Abstraction _ _ -> Nothing
+    Record _ -> Nothing
+    ConstTrue -> Nothing
+    ConstFalse -> Nothing
+    ConstZero -> Nothing
+    FreeVar _ -> Nothing
+    BoundVar _ -> Nothing
+
+lookupField :: Ident -> [Binding] -> Maybe Expr
+lookupField l cases = lookup l (map toPair cases)
+  where
+    toPair (Binding l' t) = (l', t)
 
 shiftFrom :: Integer -> Expr -> Expr
 shiftFrom k = go

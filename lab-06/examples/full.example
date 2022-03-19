@@ -1,0 +1,30 @@
+// simple references demo
+(fun (x : Ref Nat) {
+  return (
+    x := succ (! x) ;
+    x := succ (! x) ;
+    ! x
+  )
+}) (ref 0) ;
+
+// defining recursive functions via references
+(fun (f : Ref (Nat -> Nat)) {
+  return (
+    f := fun (n : Nat) {
+      return
+        if iszero n
+          then 0
+          else succ (succ (!f (pred n)))
+    };
+    !f (succ (succ (succ 0))) ;
+  )
+}) (ref (fun (n : Nat) { return n })) ;
+
+// Type Error: iszero (!x) is Bool, not Nat
+(fun (x : Ref Nat) {
+  return (
+    x := succ (!x) ;
+    x := iszero (!x) ;
+    !x
+  )
+}) (ref 0)

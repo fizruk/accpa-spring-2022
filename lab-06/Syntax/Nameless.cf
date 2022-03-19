@@ -1,0 +1,53 @@
+comment "//" ;
+comment "/*" "*/" ;
+
+ProgramExprs.  Program ::= Expr ;
+
+Seq.          Expr ::= [Expr0] ;
+
+If.           Expr0 ::= "if" Expr0 "then" Expr0 "else" Expr0 ;
+Abstraction.  Expr0 ::= "fun" "(" Type ")" "{" "return" Expr0 "}" ;
+Assign.       Expr0 ::= Expr1 ":=" Expr0 ;
+separator Expr0 ";" ;
+
+Application.  Expr1 ::= Expr1 Expr2 ;
+
+NewRef.       Expr2 ::= "ref" Expr3 ;
+DeRef.        Expr2 ::= "!" Expr3 ;
+Succ.         Expr2 ::= "succ" Expr3 ;
+Pred.         Expr2 ::= "pred" Expr3 ;
+IsZero.       Expr2 ::= "iszero" Expr3 ;
+
+ConstUnit.    Expr3 ::= "unit" ;
+ConstTrue.    Expr3 ::= "true" ;
+ConstFalse.   Expr3 ::= "false" ;
+ConstZero.    Expr3 ::= "0" ;
+FreeVar.      Expr3 ::= Ident ;
+BoundVar.     Expr3 ::= Integer ;
+Location.     Expr3 ::= "#" Integer ;
+
+_. Expr   ::= Expr0 ;
+_. Expr0  ::= Expr1 ;
+_. Expr1  ::= Expr2 ;
+_. Expr2  ::= Expr3 ;
+_. Expr3  ::= "(" Expr ")" ;
+
+Store.      Store ::= "{" [Assignment] "}" ;
+Assignment. Assignment ::= "#" Integer "=" Expr ;
+separator Assignment ";" ;
+
+StoreTyping.    StoreTyping ::= "{" [LocationTyping] "}" ;
+LocationTyping. LocationTyping ::= "#" Integer ":" Type ;
+separator LocationTyping ";" ;
+
+FunType.    Type ::= Type1 "->" Type ;
+RefType.    Type1 ::= "Ref" Type2 ;
+BoolType.   Type2 ::= "Bool" ;
+NatType.    Type2 ::= "Nat" ;
+UnitType.   Type2 ::= "Unit" ;
+
+_.  Type  ::= Type1 ;
+_.  Type1 ::= Type2 ;
+_.  Type2 ::= "(" Type ")" ;
+
+Typing.     Typing  ::= Expr ":" Type ;

@@ -1,16 +1,18 @@
-# Lab 2. Simply typed expressions and functions
+# Lab 6. References
 
-_Note: the code in this lab is an extension of [Lab 1](../lab-01/)._
+_Note: the code in this lab is an extension of [Lab 2](../lab-02/)._
 
-In this lab, we discuss implementation of an interpreter for simply typed expressions with functions, relying on intermediate nameless representation to deal with possible name conflicts when evaluating.
+In this lab, we discuss implementation of an interpreter for simply typed expressions with functions and references.
 
 Supported types:
+- `Unit` — unit type (type of assignments);
 - `Bool` — type of booleans;
 - `Nat` — type of natural numbers;
-- `A -> B` — type of functions from `A` to `B` (where `A` and `B` are both types).
+- `A -> B` — type of functions from `A` to `B` (where `A` and `B` are both types);
+- `Ref T` — type of references of type `T`.
 
-The language is **total**: all well-typed programs terminate.
-The language employs **call-by-name** evaluation strategy.
+The language is **not total**.
+The language employs **call-by-value** evaluation strategy.
 
 ## Project structure
 

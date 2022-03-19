@@ -9,7 +9,7 @@ Each demonstration occurs over the course of one lab:
 - [Lab 3. Simple extensions: `let`-bindings and records.](lab-03/)
 - [Lab 4. Simple extensions: variants and lists.](lab-04/)
 - Lab 5. _Reserved for team projects._
-- Lab 6. References and exceptions.
+- [Lab 6. References.](lab-06/)
 - Lab 7. Subtyping.
 - Lab 8. Imperative objects.
 - Lab 9. _Reserved for team projects._
