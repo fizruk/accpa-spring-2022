@@ -1,0 +1,445 @@
+/*** BNFC-Generated Pretty Printer and Abstract Syntax Viewer ***/
+
+#include <string>
+#include "Printer.H"
+#define INDENT_WIDTH 2
+
+
+//You may wish to change render
+void PrintAbsyn::render(Char c)
+{
+  if (c == '{')
+  {
+     bufAppend('\n');
+     indent();
+     bufAppend(c);
+     _n_ = _n_ + INDENT_WIDTH;
+     bufAppend('\n');
+     indent();
+  }
+  else if (c == '(' || c == '[')
+     bufAppend(c);
+  else if (c == ')' || c == ']')
+  {
+     backup();
+     bufAppend(c);
+     bufAppend(' ');
+  }
+  else if (c == '}')
+  {
+     int t;
+     _n_ = _n_ - INDENT_WIDTH;
+     for (t=0; t<INDENT_WIDTH; t++) {
+       backup();
+     }
+     bufAppend(c);
+     bufAppend('\n');
+     indent();
+  }
+  else if (c == ',')
+  {
+     backup();
+     bufAppend(c);
+     bufAppend(' ');
+  }
+  else if (c == ';')
+  {
+     backup();
+     bufAppend(c);
+     bufAppend('\n');
+     indent();
+  }
+  else if (c == ' ') bufAppend(c);
+  else if (c == 0) return;
+  else
+  {
+     bufAppend(c);
+     bufAppend(' ');
+  }
+}
+
+void PrintAbsyn::render(String s)
+{
+  render(s.c_str());
+}
+
+bool allIsSpace(const char *s)
+{
+  char c;
+  while ((c = *s++))
+    if (! isspace(c)) return false;
+  return true;
+}
+
+void PrintAbsyn::render(const char *s)
+{
+  if (*s) /* C string not empty */
+  {
+    if (allIsSpace(s)) {
+      backup();
+      bufAppend(s);
+    } else {
+      bufAppend(s);
+      bufAppend(' ');
+    }
+  }
+}
+
+void PrintAbsyn::indent()
+{
+  int n = _n_;
+  while (--n >= 0)
+    bufAppend(' ');
+}
+
+void PrintAbsyn::backup()
+{
+  if (buf_[cur_ - 1] == ' ')
+    buf_[--cur_] = 0;
+}
+
+PrintAbsyn::PrintAbsyn(void)
+{
+  _i_ = 0; _n_ = 0;
+  buf_ = 0;
+  bufReset();
+}
+
+PrintAbsyn::~PrintAbsyn(void)
+{
+}
+
+char *PrintAbsyn::print(Visitable *v)
+{
+  _i_ = 0; _n_ = 0;
+  bufReset();
+  v->accept(this);
+  return buf_;
+}
+
+void PrintAbsyn::visitExpr(Expr *p) {} //abstract class
+
+void PrintAbsyn::visitConstTrue(ConstTrue *p)
+{
+  int oldi = _i_;
+  if (oldi > 0) render(_L_PAREN);
+
+  render("true");
+
+  if (oldi > 0) render(_R_PAREN);
+
+  _i_ = oldi;
+}
+
+void PrintAbsyn::visitConstFalse(ConstFalse *p)
+{
+  int oldi = _i_;
+  if (oldi > 0) render(_L_PAREN);
+
+  render("false");
+
+  if (oldi > 0) render(_R_PAREN);
+
+  _i_ = oldi;
+}
+
+void PrintAbsyn::visitIf(If *p)
+{
+  int oldi = _i_;
+  if (oldi > 0) render(_L_PAREN);
+
+  render("if");
+  _i_ = 0; p->expr_1->accept(this);
+  render("then");
+  _i_ = 0; p->expr_2->accept(this);
+  render("else");
+  _i_ = 0; p->expr_3->accept(this);
+
+  if (oldi > 0) render(_R_PAREN);
+
+  _i_ = oldi;
+}
+
+void PrintAbsyn::visitConstZero(ConstZero *p)
+{
+  int oldi = _i_;
+  if (oldi > 0) render(_L_PAREN);
+
+  render('0');
+
+  if (oldi > 0) render(_R_PAREN);
+
+  _i_ = oldi;
+}
+
+void PrintAbsyn::visitSucc(Succ *p)
+{
+  int oldi = _i_;
+  if (oldi > 0) render(_L_PAREN);
+
+  render("succ");
+  _i_ = 0; p->expr_->accept(this);
+
+  if (oldi > 0) render(_R_PAREN);
+
+  _i_ = oldi;
+}
+
+void PrintAbsyn::visitPred(Pred *p)
+{
+  int oldi = _i_;
+  if (oldi > 0) render(_L_PAREN);
+
+  render("pred");
+  _i_ = 0; p->expr_->accept(this);
+
+  if (oldi > 0) render(_R_PAREN);
+
+  _i_ = oldi;
+}
+
+void PrintAbsyn::visitIsZero(IsZero *p)
+{
+  int oldi = _i_;
+  if (oldi > 0) render(_L_PAREN);
+
+  render("iszero");
+  _i_ = 0; p->expr_->accept(this);
+
+  if (oldi > 0) render(_R_PAREN);
+
+  _i_ = oldi;
+}
+
+void PrintAbsyn::visitFreeVar(FreeVar *p)
+{
+  int oldi = _i_;
+  if (oldi > 0) render(_L_PAREN);
+
+  visitIdent(p->ident_);
+
+  if (oldi > 0) render(_R_PAREN);
+
+  _i_ = oldi;
+}
+
+void PrintAbsyn::visitBoundVar(BoundVar *p)
+{
+  int oldi = _i_;
+  if (oldi > 0) render(_L_PAREN);
+
+  render('[');
+  visitInteger(p->integer_);
+  render(']');
+
+  if (oldi > 0) render(_R_PAREN);
+
+  _i_ = oldi;
+}
+
+void PrintAbsyn::visitAbstraction(Abstraction *p)
+{
+  int oldi = _i_;
+  if (oldi > 0) render(_L_PAREN);
+
+  render("fun");
+  render('{');
+  render("return");
+  _i_ = 0; p->expr_->accept(this);
+  render('}');
+
+  if (oldi > 0) render(_R_PAREN);
+
+  _i_ = oldi;
+}
+
+void PrintAbsyn::visitApplication(Application *p)
+{
+  int oldi = _i_;
+  if (oldi > 0) render(_L_PAREN);
+
+  _i_ = 0; p->expr_1->accept(this);
+  _i_ = 0; p->expr_2->accept(this);
+
+  if (oldi > 0) render(_R_PAREN);
+
+  _i_ = oldi;
+}
+
+void PrintAbsyn::visitInteger(Integer i)
+{
+  char tmp[20];
+  sprintf(tmp, "%d", i);
+  render(tmp);
+}
+
+void PrintAbsyn::visitDouble(Double d)
+{
+  char tmp[24];
+  sprintf(tmp, "%.15g", d);
+  render(tmp);
+}
+
+void PrintAbsyn::visitChar(Char c)
+{
+  char tmp[4];
+  sprintf(tmp, "'%c'", c);
+  render(tmp);
+}
+
+void PrintAbsyn::visitString(String s)
+{
+  bufAppend('\"');
+  bufAppend(s);
+  bufAppend('\"');
+  bufAppend(' ');
+}
+
+void PrintAbsyn::visitIdent(String s)
+{
+  render(s);
+}
+
+ShowAbsyn::ShowAbsyn(void)
+{
+  buf_ = 0;
+  bufReset();
+}
+
+ShowAbsyn::~ShowAbsyn(void)
+{
+}
+
+char *ShowAbsyn::show(Visitable *v)
+{
+  bufReset();
+  v->accept(this);
+  return buf_;
+}
+
+void ShowAbsyn::visitExpr(Expr *p) {} //abstract class
+
+void ShowAbsyn::visitConstTrue(ConstTrue *p)
+{
+  bufAppend("ConstTrue");
+}
+void ShowAbsyn::visitConstFalse(ConstFalse *p)
+{
+  bufAppend("ConstFalse");
+}
+void ShowAbsyn::visitIf(If *p)
+{
+  bufAppend('(');
+  bufAppend("If");
+  bufAppend(' ');
+  p->expr_1->accept(this);
+  bufAppend(' ');
+  p->expr_2->accept(this);
+  bufAppend(' ');
+  p->expr_3->accept(this);
+  bufAppend(')');
+}
+void ShowAbsyn::visitConstZero(ConstZero *p)
+{
+  bufAppend("ConstZero");
+}
+void ShowAbsyn::visitSucc(Succ *p)
+{
+  bufAppend('(');
+  bufAppend("Succ");
+  bufAppend(' ');
+  bufAppend('[');
+  if (p->expr_)  p->expr_->accept(this);
+  bufAppend(']');
+  bufAppend(')');
+}
+void ShowAbsyn::visitPred(Pred *p)
+{
+  bufAppend('(');
+  bufAppend("Pred");
+  bufAppend(' ');
+  bufAppend('[');
+  if (p->expr_)  p->expr_->accept(this);
+  bufAppend(']');
+  bufAppend(')');
+}
+void ShowAbsyn::visitIsZero(IsZero *p)
+{
+  bufAppend('(');
+  bufAppend("IsZero");
+  bufAppend(' ');
+  bufAppend('[');
+  if (p->expr_)  p->expr_->accept(this);
+  bufAppend(']');
+  bufAppend(')');
+}
+void ShowAbsyn::visitFreeVar(FreeVar *p)
+{
+  bufAppend('(');
+  bufAppend("FreeVar");
+  bufAppend(' ');
+  visitIdent(p->ident_);
+  bufAppend(')');
+}
+void ShowAbsyn::visitBoundVar(BoundVar *p)
+{
+  bufAppend('(');
+  bufAppend("BoundVar");
+  bufAppend(' ');
+  visitInteger(p->integer_);
+  bufAppend(' ');
+  bufAppend(')');
+}
+void ShowAbsyn::visitAbstraction(Abstraction *p)
+{
+  bufAppend('(');
+  bufAppend("Abstraction");
+  bufAppend(' ');
+  bufAppend('[');
+  if (p->expr_)  p->expr_->accept(this);
+  bufAppend(']');
+  bufAppend(' ');
+  bufAppend(')');
+}
+void ShowAbsyn::visitApplication(Application *p)
+{
+  bufAppend('(');
+  bufAppend("Application");
+  bufAppend(' ');
+  p->expr_1->accept(this);
+  bufAppend(' ');
+  p->expr_2->accept(this);
+  bufAppend(')');
+}
+void ShowAbsyn::visitInteger(Integer i)
+{
+  char tmp[20];
+  sprintf(tmp, "%d", i);
+  bufAppend(tmp);
+}
+void ShowAbsyn::visitDouble(Double d)
+{
+  char tmp[24];
+  sprintf(tmp, "%.15g", d);
+  bufAppend(tmp);
+}
+void ShowAbsyn::visitChar(Char c)
+{
+  bufAppend('\'');
+  bufAppend(c);
+  bufAppend('\'');
+}
+void ShowAbsyn::visitString(String s)
+{
+  bufAppend('\"');
+  bufAppend(s);
+  bufAppend('\"');
+}
+void ShowAbsyn::visitIdent(String s)
+{
+  bufAppend('\"');
+  bufAppend(s);
+  bufAppend('\"');
+}
+
+
