@@ -1,0 +1,16 @@
+ConstTrue.  Expr  ::= "true" ;
+
+ConstFalse. Expr  ::= "false" ;
+If.         Expr  ::= "if" Expr "then" Expr "else" Expr ;
+
+ConstZero.  Expr  ::= "0" ;
+Succ.       Expr  ::= "succ" Expr ;
+Pred.       Expr  ::= "pred" Expr ;
+IsZero.     Expr  ::= "iszero" Expr ;
+
+FreeVar.      Expr ::= Ident ;
+BoundVar.     Expr ::= "[" Integer "]" ;
+Abstraction.  Expr ::= "fun" "{" "return" Expr "}" ;
+Application.  Expr ::= Expr Expr ;
+
+_. Expr ::= "(" Expr ")" ;
