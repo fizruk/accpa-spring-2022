@@ -4,7 +4,7 @@ Source code for demonstrations used in the ACC&amp;PA course of Spring 2022.
 
 Each demonstration occurs over the course of one lab:
 
-- [Lab 1. Untyped expressions with functions.](lab-01/)
+- [Lab 1. Untyped expressions with functions.](lab-01/) ([Haskell](lab-01/), [Java](lab-01-java/), [C++](lab-01-cpp/))
 - [Lab 2. Simply typed expressions with functions.](lab-02/)
 - [Lab 3. Simple extensions: `let`-bindings and records.](lab-03/)
 - [Lab 4. Simple extensions: variants and lists.](lab-04/)
