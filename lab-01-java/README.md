@@ -1,4 +1,6 @@
-# Lab 1. Untyped expressions, functions and nameless representation
+# Lab 1 (in Java). Untyped expressions, functions and nameless representation
+
+_This is a Java version of materials demonstrated in [Lab 1](../lab-01/)._
 
 In this lab, we discuss implementation of an interpreter for simple untyped expressions with functions, relying on intermediate nameless representation to deal with possible name conflicts.
 
@@ -10,43 +12,53 @@ The language employs **call-by-name** evaluation strategy.
 
 Syntax for normal and nameless representation of terms is defined using a labelled BNF in files `Syntax/Normal.cf` and `Syntax/Nameless.cf` correspondingly. BNF converter tool is used to generate parser, abstract syntax, and pretty printer automatically.
 
-Module `Convert.hs` describes conversion between normal and nameless representations.
-
-Module `Eval/Nameless.hs` defines evaluation of nameless terms. This implementation together with necessary conversions is used to define evaluation of normal terms in `Eval.hs` module.
-
-Finally, `interpreter.hs` is the main module, that performs parsing of the standard input, evaluating every expression, and pretty-printing the result.
-
 ## How to use
 
-The interpreter reads standard input, parses a series of expressions separated by a semicolon (`;`), evaluates each expression and prints out the results.
+The generated parser `Test` reads standard input, parses a series of expressions separated by a semicolon (`;`), evaluates each expression and prints out the results.
 
 ```sh
-echo "(fun (x) { return (pred x) })(succ (succ 0))" | ./interpreter
+echo "(fun (x) { return (pred x) })(succ (succ 0))" | java Syntax.normal.Test
 ```
 ```
-succ 0
+Parse Succesful!
+
+[Abstract Syntax]
+
+(ProgramExprs [(Application (Abstraction "x" (Pred (Var "x"))) (Succ (Succ ConstZero)))])
+
+[Linearized Tree]
+
+fun (x)
+{
+  return pred x}
 ```
 
 Some example programs are available in the `examples/` directory:
 
 ```sh
-cat examples/full.example | ./interpreter
+cat examples/booleans.example | java Syntax.normal.Test
 ```
+
 ```
-0
-succ succ 0
-succ succ succ succ succ succ succ succ 0
-succ succ succ succ succ succ succ 0
-succ succ succ succ succ succ succ succ succ succ succ succ 0
-succ succ succ succ succ succ 0
+Parse Succesful!
+
+[Abstract Syntax]
+
+(ProgramExprs [ConstTrue, ConstFalse, (If ConstTrue ConstFalse ConstTrue), (If (If ConstTrue ConstFalse ConstTrue) ConstFalse ConstTrue)])
+
+[Linearized Tree]
+
+true;
+false;
+if true then false else true;
+if if true then false else true then false else true
 ```
 
 ## How to build
 
 ### Prerequisites
 
-This lab uses Haskell programming language and [BNF Converter tool](http://bnfc.digitalgrammars.com) for demo implementation.
-To install Haskell, follow instructions on the [Haskell Downloads page](https://www.haskell.org/downloads/). The demonstration is performed using [the Stack tool](https://docs.haskellstack.org), but other installation methods are possible.
+This lab uses Java programming language, [ANTLRv4](https://www.antlr.org/download.html) parser generator, and [BNF Converter tool](http://bnfc.digitalgrammars.com) for demo implementation.
 
 To install BNF converter tool, follow instructions on their [official website](http://bnfc.digitalgrammars.com). For example, you can use the Stack tool:
 
@@ -54,27 +66,17 @@ To install BNF converter tool, follow instructions on their [official website](h
 stack install BNFC
 ```
 
-To use BNF converter with the Haskell implementation, you will also need to install Alex and Happy (lexer and parser generator tools for Haskell, analogous to YACC and Bison). Using Stack you can install them as follows:
-
-```sh
-stack install alex happy
-```
+To use BNF converter with the Java implementation, you will also need to install ANTLRv4 (or Cup and JLex). Follow instructions on the official site. You might also be interested in [ANTLR Mega Tutorial](https://tomassetti.me/antlr-mega-tutorial/), in particular its [Setup ANTLR section](https://tomassetti.me/antlr-mega-tutorial/#chapter11).
 
 ### Building the interpreter
 
-First, to run BNF converter and generate Haskell files for the syntax, run:
+To run BNF converter, generate source files, run ANTLR, and compile, simply run:
 
 ```sh
 make
 ```
 
-Now, build the interpreter with GHC:
-
-```sh
-stack ghc interpreter.hs
-```
-
-This should generate an executable `./interpreter` that you can now use to interpret untyped expressions with functions.
+This should generate `Syntax/normal/Test.class` and `Syntax/nameless/Test.class` files that you can now use to test parsing of the source code in the target language.
 
 ### Generating the PDF with syntax description
 
