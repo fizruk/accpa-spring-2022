@@ -70,6 +70,12 @@ To use BNF converter with the С++ implementation, you will also need to install
 
 ### Building the interpreter
 
+You probably want to clean up previous build files first:
+
+```sh
+make clean
+```
+
 To run BNF converter, generate source files, run `bison`, and compile, simply run:
 
 ```sh
