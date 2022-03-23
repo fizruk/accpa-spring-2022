@@ -21,10 +21,15 @@ $i = [$l $d _ ']     -- identifier character
 $u = [. \n]          -- universal: any character
 
 @rsyms =    -- symbols and non-identifier-like reserved words
-   "0" | \[ | \] | \{ | \} | \( | \)
+   \; | "0" | \[ | \] | \( | \) | \{ | \}
 
 :-
 
+-- Line comments
+"//" [.]* ;
+
+-- Block comments
+\/ \* [$u # \*]* \* ([$u # [\* \/]] [$u # \*]* \* | \*)* \/ ;
 
 $white+ ;
 @rsyms
@@ -102,7 +107,7 @@ eitherResIdent tv s = treeFind resWords
                               | s == a = t
 
 resWords :: BTree
-resWords = b "if" 9 (b "]" 5 (b "0" 3 (b ")" 2 (b "(" 1 N N) N) (b "[" 4 N N)) (b "false" 7 (b "else" 6 N N) (b "fun" 8 N N))) (b "then" 14 (b "return" 12 (b "pred" 11 (b "iszero" 10 N N) N) (b "succ" 13 N N)) (b "{" 16 (b "true" 15 N N) (b "}" 17 N N)))
+resWords = b "if" 10 (b "[" 5 (b "0" 3 (b ")" 2 (b "(" 1 N N) N) (b ";" 4 N N)) (b "false" 8 (b "else" 7 (b "]" 6 N N) N) (b "fun" 9 N N))) (b "then" 15 (b "return" 13 (b "pred" 12 (b "iszero" 11 N N) N) (b "succ" 14 N N)) (b "{" 17 (b "true" 16 N N) (b "}" 18 N N)))
    where b s n = let bs = s
                  in  B bs (TS bs n)
 

@@ -53,13 +53,13 @@ The reserved words used in Nameless are the following: \\
 The symbols used in Nameless are the following: \\
 
 \begin{tabular}{lll}
-{\symb{0}} &{\symb{[}} &{\symb{]}} \\
-{\symb{\{}} &{\symb{\}}} &{\symb{(}} \\
-{\symb{)}} & & \\
+{\symb{;}} &{\symb{0}} &{\symb{[}} \\
+{\symb{]}} &{\symb{(}} &{\symb{)}} \\
+{\symb{\{}} &{\symb{\}}} & \\
 \end{tabular}\\
 
 \subsection*{Comments}
-There are no single-line comments in the grammar. \\There are no multiple-line comments in the grammar.
+Single-line comments begin with {\symb{//}}. \\Multiple-line comments are  enclosed with {\symb{/*}} and {\symb{*/}}.
 
 \section*{The syntactic structure of Nameless}
 
@@ -69,6 +69,16 @@ and {\emptyP} (empty rule) belong to the BNF notation.
 All other symbols are terminals.\\
 
 \begin{tabular}{lll}
+{\nonterminal{Program}} & {\arrow}  &{\nonterminal{ListExpr}}  \\
+\end{tabular}\\
+
+\begin{tabular}{lll}
+{\nonterminal{ListExpr}} & {\arrow}  &{\emptyP} \\
+ & {\delimit}  &{\nonterminal{Expr}}  \\
+ & {\delimit}  &{\nonterminal{Expr}} {\terminal{;}} {\nonterminal{ListExpr}}  \\
+\end{tabular}\\
+
+\begin{tabular}{lll}
 {\nonterminal{Expr}} & {\arrow}  &{\terminal{true}}  \\
  & {\delimit}  &{\terminal{false}}  \\
  & {\delimit}  &{\terminal{if}} {\nonterminal{Expr}} {\terminal{then}} {\nonterminal{Expr}} {\terminal{else}} {\nonterminal{Expr}}  \\
@@ -76,9 +86,9 @@ All other symbols are terminals.\\
  & {\delimit}  &{\terminal{succ}} {\nonterminal{Expr}}  \\
  & {\delimit}  &{\terminal{pred}} {\nonterminal{Expr}}  \\
  & {\delimit}  &{\terminal{iszero}} {\nonterminal{Expr}}  \\
- & {\delimit}  &{\nonterminal{Ident}}  \\
  & {\delimit}  &{\terminal{[}} {\nonterminal{Integer}} {\terminal{]}}  \\
- & {\delimit}  &{\terminal{fun}} {\terminal{\{}} {\terminal{return}} {\nonterminal{Expr}} {\terminal{\}}}  \\
+ & {\delimit}  &{\nonterminal{Ident}}  \\
+ & {\delimit}  &{\terminal{fun}} {\terminal{(}} {\terminal{)}} {\terminal{\{}} {\terminal{return}} {\nonterminal{Expr}} {\terminal{\}}}  \\
  & {\delimit}  &{\nonterminal{Expr}} {\nonterminal{Expr}}  \\
  & {\delimit}  &{\terminal{(}} {\nonterminal{Expr}} {\terminal{)}}  \\
 \end{tabular}\\

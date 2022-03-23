@@ -1,0 +1,15 @@
+
+(((fun (f) {
+  return fun (x) {
+    return fun (y) {
+      return if x then succ y else f y x
+    }
+  }
+})
+(fun (a) {
+  return fun (b) {
+    return if iszero a then b else a
+  }
+}))
+false)
+(succ succ succ succ 0)

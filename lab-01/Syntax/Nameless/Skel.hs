@@ -17,6 +17,10 @@ transIdent :: Syntax.Nameless.Abs.Ident -> Result
 transIdent x = case x of
   Syntax.Nameless.Abs.Ident string -> failure x
 
+transProgram :: Syntax.Nameless.Abs.Program -> Result
+transProgram x = case x of
+  Syntax.Nameless.Abs.ProgramExprs exprs -> failure x
+
 transExpr :: Syntax.Nameless.Abs.Expr -> Result
 transExpr x = case x of
   Syntax.Nameless.Abs.ConstTrue -> failure x
@@ -26,7 +30,7 @@ transExpr x = case x of
   Syntax.Nameless.Abs.Succ expr -> failure x
   Syntax.Nameless.Abs.Pred expr -> failure x
   Syntax.Nameless.Abs.IsZero expr -> failure x
-  Syntax.Nameless.Abs.FreeVar ident -> failure x
   Syntax.Nameless.Abs.BoundVar integer -> failure x
+  Syntax.Nameless.Abs.FreeVar ident -> failure x
   Syntax.Nameless.Abs.Abstraction expr -> failure x
   Syntax.Nameless.Abs.Application expr1 expr2 -> failure x

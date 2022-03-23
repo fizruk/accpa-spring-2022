@@ -4,6 +4,8 @@
 module Syntax.Nameless.Par
   ( happyError
   , myLexer
+  , pProgram
+  , pListExpr
   , pExpr
   ) where
 
@@ -14,6 +16,8 @@ import Syntax.Nameless.Lex
 
 }
 
+%name pProgram Program
+%name pListExpr ListExpr
 %name pExpr Expr
 -- no lexer declaration
 %monad { Err } { (>>=) } { return }
@@ -22,20 +26,21 @@ import Syntax.Nameless.Lex
   '(' { PT _ (TS _ 1) }
   ')' { PT _ (TS _ 2) }
   '0' { PT _ (TS _ 3) }
-  '[' { PT _ (TS _ 4) }
-  ']' { PT _ (TS _ 5) }
-  'else' { PT _ (TS _ 6) }
-  'false' { PT _ (TS _ 7) }
-  'fun' { PT _ (TS _ 8) }
-  'if' { PT _ (TS _ 9) }
-  'iszero' { PT _ (TS _ 10) }
-  'pred' { PT _ (TS _ 11) }
-  'return' { PT _ (TS _ 12) }
-  'succ' { PT _ (TS _ 13) }
-  'then' { PT _ (TS _ 14) }
-  'true' { PT _ (TS _ 15) }
-  '{' { PT _ (TS _ 16) }
-  '}' { PT _ (TS _ 17) }
+  ';' { PT _ (TS _ 4) }
+  '[' { PT _ (TS _ 5) }
+  ']' { PT _ (TS _ 6) }
+  'else' { PT _ (TS _ 7) }
+  'false' { PT _ (TS _ 8) }
+  'fun' { PT _ (TS _ 9) }
+  'if' { PT _ (TS _ 10) }
+  'iszero' { PT _ (TS _ 11) }
+  'pred' { PT _ (TS _ 12) }
+  'return' { PT _ (TS _ 13) }
+  'succ' { PT _ (TS _ 14) }
+  'then' { PT _ (TS _ 15) }
+  'true' { PT _ (TS _ 16) }
+  '{' { PT _ (TS _ 17) }
+  '}' { PT _ (TS _ 18) }
   L_Ident  { PT _ (TV $$) }
   L_integ  { PT _ (TI $$) }
 
@@ -47,6 +52,14 @@ Ident  : L_Ident { Syntax.Nameless.Abs.Ident $1 }
 Integer :: { Integer }
 Integer  : L_integ  { (read $1) :: Integer }
 
+Program :: { Syntax.Nameless.Abs.Program }
+Program : ListExpr { Syntax.Nameless.Abs.ProgramExprs $1 }
+
+ListExpr :: { [Syntax.Nameless.Abs.Expr] }
+ListExpr : {- empty -} { [] }
+         | Expr { (:[]) $1 }
+         | Expr ';' ListExpr { (:) $1 $3 }
+
 Expr :: { Syntax.Nameless.Abs.Expr }
 Expr : 'true' { Syntax.Nameless.Abs.ConstTrue }
      | 'false' { Syntax.Nameless.Abs.ConstFalse }
@@ -55,9 +68,9 @@ Expr : 'true' { Syntax.Nameless.Abs.ConstTrue }
      | 'succ' Expr { Syntax.Nameless.Abs.Succ $2 }
      | 'pred' Expr { Syntax.Nameless.Abs.Pred $2 }
      | 'iszero' Expr { Syntax.Nameless.Abs.IsZero $2 }
-     | Ident { Syntax.Nameless.Abs.FreeVar $1 }
      | '[' Integer ']' { Syntax.Nameless.Abs.BoundVar $2 }
-     | 'fun' '{' 'return' Expr '}' { Syntax.Nameless.Abs.Abstraction $4 }
+     | Ident { Syntax.Nameless.Abs.FreeVar $1 }
+     | 'fun' '(' ')' '{' 'return' Expr '}' { Syntax.Nameless.Abs.Abstraction $6 }
      | Expr Expr { Syntax.Nameless.Abs.Application $1 $2 }
      | '(' Expr ')' { $2 }
 {

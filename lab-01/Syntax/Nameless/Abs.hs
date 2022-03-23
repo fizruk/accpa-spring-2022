@@ -11,6 +11,9 @@ import Prelude (Integer, String)
 import qualified Prelude as C (Eq, Ord, Show, Read)
 import qualified Data.String
 
+data Program = ProgramExprs [Expr]
+  deriving (C.Eq, C.Ord, C.Show, C.Read)
+
 data Expr
     = ConstTrue
     | ConstFalse
@@ -19,8 +22,8 @@ data Expr
     | Succ Expr
     | Pred Expr
     | IsZero Expr
-    | FreeVar Ident
     | BoundVar Integer
+    | FreeVar Ident
     | Abstraction Expr
     | Application Expr Expr
   deriving (C.Eq, C.Ord, C.Show, C.Read)

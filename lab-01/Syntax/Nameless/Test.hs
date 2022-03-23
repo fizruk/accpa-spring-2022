@@ -18,7 +18,7 @@ import Control.Monad      ( when )
 
 import Syntax.Nameless.Abs   ()
 import Syntax.Nameless.Lex   ( Token )
-import Syntax.Nameless.Par   ( pExpr, myLexer )
+import Syntax.Nameless.Par   ( pProgram, myLexer )
 import Syntax.Nameless.Print ( Print, printTree )
 import Syntax.Nameless.Skel  ()
 
@@ -69,7 +69,7 @@ main = do
   args <- getArgs
   case args of
     ["--help"] -> usage
-    []         -> getContents >>= run 2 pExpr
-    "-s":fs    -> mapM_ (runFile 0 pExpr) fs
-    fs         -> mapM_ (runFile 2 pExpr) fs
+    []         -> getContents >>= run 2 pProgram
+    "-s":fs    -> mapM_ (runFile 0 pProgram) fs
+    fs         -> mapM_ (runFile 2 pProgram) fs
 

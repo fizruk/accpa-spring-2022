@@ -1,21 +1,24 @@
 comment "//" ;
 comment "/*" "*/" ;
 
-ProgramExprs.  Program ::= [Expr] ;
+ProgramExprs.   Program ::= [Expr] ;
 
 separator Expr ";" ;
 
-ConstTrue.  Expr  ::= "true" ;
-ConstFalse. Expr  ::= "false" ;
-If.         Expr  ::= "if" Expr "then" Expr "else" Expr ;
+ConstTrue.  Expr ::= "true" ;
+ConstFalse. Expr ::= "false" ;
+If.         Expr ::= "if" Expr "then" Expr "else" Expr ;
 
-ConstZero.  Expr  ::= "0" ;
-Succ.       Expr  ::= "succ" Expr ;
-Pred.       Expr  ::= "pred" Expr ;
-IsZero.     Expr  ::= "iszero" Expr ;
+ConstZero.  Expr ::= "0" ;
+Succ.       Expr ::= "succ" Expr ;
+Pred.       Expr ::= "pred" Expr ;
+IsZero.     Expr ::= "iszero" Expr ;
 
 Var.          Expr ::= Ident ;
-Abstraction.  Expr ::= "fun" "(" Ident ")" "{" "return" Expr "}" ;
+-- fun(x) { return succ x }
+Abstraction.  Expr
+  ::= "fun" "(" Ident ")" "{" "return" Expr "}" ;
 Application.  Expr ::= Expr Expr ;
 
-_. Expr ::= "(" Expr ")" ;
+_.            Expr ::= "(" Expr ")" ;
+

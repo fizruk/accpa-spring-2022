@@ -3,105 +3,81 @@ module Eval.Nameless where
 
 import           Syntax.Nameless.Abs
 
-isValue :: Expr -> Bool
-isValue expr =
+eval' :: Expr -> Expr
+eval' expr =
   case expr of
-    ConstTrue     -> True
-    ConstFalse    -> True
-    Abstraction _ -> True
-    _             -> isNatValue expr
+    Application fun arg ->
+      case eval' fun of
+        Abstraction body -> eval' (substitute (0, arg) body)
+        fun'             -> Application fun' arg
+    _ -> expr
 
-isNatValue :: Expr -> Bool
-isNatValue expr =
-  case expr of
-    ConstZero -> True
-    Succ v    -> isNatValue v
-    _         -> False
+eval :: Expr -> Expr
+eval expr =
+  case evalStep expr of
+    Nothing    -> expr
+    Just expr' -> eval expr'
 
 evalStep :: Expr -> Maybe Expr
 evalStep expr =
   case expr of
-    If ConstTrue  t2 _t3 -> Just t2
-    If ConstFalse _t2 t3 -> Just t3
-    If t1 t2 t3 ->
-      case evalStep t1 of
-        Nothing  -> Nothing
-        Just t1' -> Just (If t1' t2 t3)
-
-    Succ t ->
-      case evalStep t of
-        Nothing -> Nothing
-        Just t' -> Just (Succ t')
-
-    Pred ConstZero -> Just ConstZero
-    Pred (Succ t)  -> Just t
-    Pred t ->
-      case evalStep t of
-        Nothing -> Nothing
-        Just t' -> Just (Pred t')
-
-    IsZero ConstZero -> Just ConstTrue
-    IsZero (Succ _)  -> Just ConstFalse
-    IsZero t ->
-      case evalStep t of
-        Nothing -> Nothing
-        Just t' -> Just (IsZero t')
-
     Application (Abstraction body) arg ->
       Just (substitute (0, arg) body)
     Application t1 t2 ->
       case evalStep t1 of
-        Nothing  -> Nothing
-        Just t1' -> Just (Application t1' t2)
+        Just u1 -> Just (Application u1 t2)
+        Nothing ->
+          case evalStep t2 of
+            Just u2 -> Just (Application t1 u2)
+            Nothing -> Nothing
+    _ -> Nothing
 
-    Abstraction _ -> Nothing
-    ConstTrue -> Nothing
-    ConstFalse -> Nothing
-    ConstZero -> Nothing
-    FreeVar _ -> Nothing
-    BoundVar _ -> Nothing
+substitute :: (Integer, Expr) -> Expr -> Expr
+substitute (n, s) expr =
+  case expr of
+    ConstTrue -> ConstTrue
+    ConstFalse -> ConstFalse
+    ConstZero -> ConstZero
 
-shiftFrom :: Integer -> Expr -> Expr
-shiftFrom k = go
-  where
-    go expr =
-      case expr of
-        BoundVar n
-          | n >= k    -> BoundVar (n + 1)
-          | otherwise -> expr
-        FreeVar _ -> expr
-        Abstraction body -> Abstraction (shiftFrom (k + 1) body)
-        Application t1 t2 -> Application (go t1) (go t2)
+    If t1 t2 t3 -> If
+      (substitute (n, s) t1)
+      (substitute (n, s) t2)
+      (substitute (n, s) t3)
 
-        ConstTrue -> ConstTrue
-        ConstFalse -> ConstFalse
-        If t1 t2 t3 -> If (go t1) (go t2) (go t3)
+    Succ t -> Succ (substitute (n, s) t)
+    Pred t -> Pred (substitute (n, s) t)
+    IsZero t -> IsZero (substitute (n, s) t)
 
-        ConstZero -> ConstZero
-        Succ t -> Succ (go t)
-        Pred t -> Pred (go t)
-        IsZero t -> IsZero (go t)
+    BoundVar m ->
+      if n == m
+         then s
+         else expr
+    FreeVar _ -> expr
+    Abstraction t -> Abstraction (substitute (n+1, shift s) t)
+    Application t1 t2 -> Application (substitute (n, s) t1) (substitute (n, s) t2)
 
 shift :: Expr -> Expr
 shift = shiftFrom 0
 
-substitute :: (Integer, Expr) -> Expr -> Expr
-substitute (n, s) = go
-  where
-    go expr =
-      case expr of
-        BoundVar m
-          | n == m -> s
-          | otherwise -> expr
-        FreeVar _ -> expr
-        Abstraction body -> Abstraction (substitute (n + 1, shift s) body)
-        Application t1 t2 -> Application (go t1) (go t2)
+shiftFrom :: Integer -> Expr -> Expr
+shiftFrom k expr =
+  case expr of
+    BoundVar n
+      | n < k -> expr
+      | otherwise -> BoundVar (n + 1)
+    FreeVar _ -> expr
+    Abstraction t -> Abstraction (shiftFrom (k + 1) t)
+    Application t1 t2 -> Application (shiftFrom k t1) (shiftFrom k t2)
 
-        ConstTrue -> ConstTrue
-        ConstFalse -> ConstFalse
-        If t1 t2 t3 -> If (go t1) (go t2) (go t3)
+    ConstTrue -> ConstTrue
+    ConstFalse -> ConstFalse
+    ConstZero -> ConstZero
 
-        ConstZero -> ConstZero
-        Succ t -> Succ (go t)
-        Pred t -> Pred (go t)
-        IsZero t -> IsZero (go t)
+    If t1 t2 t3 -> If
+      (shiftFrom k t1)
+      (shiftFrom k t2)
+      (shiftFrom k t3)
+
+    Succ t -> Succ (shiftFrom k t)
+    Pred t -> Pred (shiftFrom k t)
+    IsZero t -> IsZero (shiftFrom k t)

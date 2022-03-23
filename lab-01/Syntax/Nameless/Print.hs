@@ -110,6 +110,13 @@ instance Print Double where
 instance Print Syntax.Nameless.Abs.Ident where
   prt _ (Syntax.Nameless.Abs.Ident i) = doc $ showString i
 
+instance Print Syntax.Nameless.Abs.Program where
+  prt i = \case
+    Syntax.Nameless.Abs.ProgramExprs exprs -> prPrec i 0 (concatD [prt 0 exprs])
+
+instance Print [Syntax.Nameless.Abs.Expr] where
+  prt = prtList
+
 instance Print Syntax.Nameless.Abs.Expr where
   prt i = \case
     Syntax.Nameless.Abs.ConstTrue -> prPrec i 0 (concatD [doc (showString "true")])
@@ -119,8 +126,11 @@ instance Print Syntax.Nameless.Abs.Expr where
     Syntax.Nameless.Abs.Succ expr -> prPrec i 0 (concatD [doc (showString "succ"), prt 0 expr])
     Syntax.Nameless.Abs.Pred expr -> prPrec i 0 (concatD [doc (showString "pred"), prt 0 expr])
     Syntax.Nameless.Abs.IsZero expr -> prPrec i 0 (concatD [doc (showString "iszero"), prt 0 expr])
-    Syntax.Nameless.Abs.FreeVar id_ -> prPrec i 0 (concatD [prt 0 id_])
     Syntax.Nameless.Abs.BoundVar n -> prPrec i 0 (concatD [doc (showString "["), prt 0 n, doc (showString "]")])
-    Syntax.Nameless.Abs.Abstraction expr -> prPrec i 0 (concatD [doc (showString "fun"), doc (showString "{"), doc (showString "return"), prt 0 expr, doc (showString "}")])
+    Syntax.Nameless.Abs.FreeVar id_ -> prPrec i 0 (concatD [prt 0 id_])
+    Syntax.Nameless.Abs.Abstraction expr -> prPrec i 0 (concatD [doc (showString "fun"), doc (showString "("), doc (showString ")"), doc (showString "{"), doc (showString "return"), prt 0 expr, doc (showString "}")])
     Syntax.Nameless.Abs.Application expr1 expr2 -> prPrec i 0 (concatD [prt 0 expr1, prt 0 expr2])
+  prtList _ [] = concatD []
+  prtList _ [x] = concatD [prt 0 x]
+  prtList _ (x:xs) = concatD [prt 0 x, doc (showString ";"), prt 0 xs]
 
