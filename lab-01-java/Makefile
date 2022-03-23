@@ -13,8 +13,8 @@ doc/Syntax/Nameless.tex: Syntax/Nameless.cf
 	bnfc --latex Syntax/Nameless.cf -o doc/Syntax/
 
 clean:
-	make --makefile=Syntax/MakefileNormal clean
-	make --makefile=Syntax/MakefileNameless clean
+	rm -rf Syntax/Normal
+	rm -rf Syntax/Nameless
 	cd doc/Syntax && (latexmk -c; cd ../..)
 
 Syntax/Normal/Test: Syntax/Normal.cf
