@@ -1,0 +1,13 @@
+true ;
+
+false ;
+
+(fun (f : Nat -> Bool) {
+  return if f (succ 0) then false else true
+})
+(fun (x : Nat) { return iszero x })
+;
+
+if (if true then false else true)
+  then false
+  else true
