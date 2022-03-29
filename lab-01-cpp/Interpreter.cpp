@@ -10,7 +10,6 @@
 
 int main() {
   auto input = stdin;
-  input = fopen("../examples/full2.example", "r");
   Normal::Program *prog = nullptr;
   try {
     prog = Normal::pProgram(input);

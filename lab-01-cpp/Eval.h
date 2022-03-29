@@ -34,9 +34,6 @@ std::list<Normal::Expr *> evalSteps(Normal::Expr *expr) {
 }
 
 Normal::Expr *eval(Normal::Expr *expr) {
-  auto befNorm = Normal::Expr::num;
-  auto befNmls = Nameless::Expr::num;
-
   auto steps = evalSteps(expr);
   Normal::Expr *res = nullptr;
   if (!steps.empty()) {
