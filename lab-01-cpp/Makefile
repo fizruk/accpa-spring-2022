@@ -19,12 +19,12 @@ clean:
 
 Syntax/Normal/TestNormal: Syntax/Normal.cf
 	mkdir -p Syntax/Normal/
-	cd Syntax/Normal/ && (bnfc -m --cpp ../Normal.cf; cd ../../)
+	cd Syntax/Normal/ && (bnfc -m --cpp ../Normal.cf -l -p Normal; cd ../../)
 	cd Syntax/Normal/ && (make; cd ../../)
 
 Syntax/Nameless/TestNameless: Syntax/Nameless.cf
 	mkdir -p Syntax/Nameless/
-	cd Syntax/Nameless/ && (bnfc -m --cpp ../Nameless.cf; cd ../../)
+	cd Syntax/Nameless/ && (bnfc -m --cpp ../Nameless.cf -l -p Nameless; cd ../../)
 	cd Syntax/Nameless/ && (make; cd ../../)
 
 .PHONY: all clean
