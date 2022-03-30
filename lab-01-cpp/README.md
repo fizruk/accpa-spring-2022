@@ -60,6 +60,8 @@ if if true then false else true then false else true
 
 This lab uses C++ programming language, [Bison](https://www.gnu.org/software/bison/) parser generator, and [BNF Converter tool](http://bnfc.digitalgrammars.com) for demo implementation.
 
+You also need CMake version 3.13 or higher to be able to compile.
+
 To install BNF converter tool, follow instructions on their [official website](http://bnfc.digitalgrammars.com). For example, you can use the Stack tool:
 
 ```sh
@@ -94,3 +96,14 @@ make pdf
 ```
 
 This will generate PDF files `doc/Syntax/Normal.pdf` and `doc/Syntax/Nameless.pdf`.
+
+
+## How to run
+
+After successfull compilation, the binary file should be located at `build/Interpreter`
+
+You can test it with:
+
+```sh
+cat examples/full.example | ./build/Interpreter
+```
