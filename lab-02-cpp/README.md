@@ -30,7 +30,7 @@ Finally, `interpreter.cpp` is the main file, that performs parsing of the standa
 The interpreter reads standard input, parses a series of expressions separated by a semicolon (`;`), typechecks and evaluates each expression and prints out the results.
 
 ```sh
-echo "(fun (x : Nat) { return (pred x) })(succ (succ 0))" | ./build/interpreter
+echo "(fun (x : Nat) { return (pred x) })(succ (succ 0))" | ./build/Interpreter
 ```
 ```
 succ 0 : Nat
@@ -39,7 +39,7 @@ succ 0 : Nat
 Some example programs are available in the `examples/` directory:
 
 ```sh
-cat examples/full.example | ./build/interpreter
+cat examples/full.example | ./build/Interpreter
 ```
 
 ## How to build
