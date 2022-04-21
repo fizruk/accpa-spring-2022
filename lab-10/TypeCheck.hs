@@ -1,8 +1,11 @@
 {-# OPTIONS_GHC -Wall -fno-warn-unused-do-bind #-}
 module TypeCheck where
 
+import           Convert             (fromNamelessType_, toNamelessType,
+                                      toNamelessType')
 import           Data.Function       (on)
 import           Data.List           (nubBy, (\\))
+import qualified Eval.Nameless       as Nameless
 import           Syntax.Normal.Abs
 import           Syntax.Normal.Print (printTree)
 
@@ -67,6 +70,13 @@ expectedFunType expr actual = Left $ unlines
   , "  " <> printTree expr
   ]
 
+expectedRecType :: Type -> Either String a
+expectedRecType actual = Left $ unlines
+  [ "expected a recursive type"
+  , "but actual type is"
+  , "  " <> printTree actual
+  ]
+
 expectedRecordType :: Expr -> Type -> Either String a
 expectedRecordType expr actual = Left $ unlines
   [ "expected record type"
@@ -95,7 +105,7 @@ undefinedVar expr = Left $ unlines
 typecheck :: Context -> Typing -> Either String Typing
 typecheck context typing@(Typing expr expectedType) = do
   actualType <- typeOf context expr
-  if actualType == expectedType
+  if toNamelessType actualType == toNamelessType expectedType
     then Right typing
     else typeMismatch typing actualType
 
@@ -221,7 +231,24 @@ typeOf context expr =
           | otherwise -> typeMismatch (Typing t ty) (FunType t1 t1)
         _ -> expectedFunType t ty
 
+    Unfold ty@(RecType x body) t -> do
+      typecheck context (Typing t ty)
+      return (substituteType (x, ty) body)
+    Unfold ty _ ->
+      expectedRecType ty
+
+    Fold ty@(RecType x body) t -> do
+      typecheck context (Typing t (substituteType (x, ty) body))
+      return ty
+    Fold ty _ ->
+      expectedRecType ty
+
   where
+    substituteType (x, s) t = fromNamelessType_ (Nameless.substituteType (0, s') t')
+      where
+        s' = toNamelessType s
+        t' = toNamelessType' [x] t
+
     typeOfField (Binding x t) = do
       ty <- typeOf context t
       return (FieldType x ty)

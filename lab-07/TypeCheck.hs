@@ -92,10 +92,37 @@ undefinedVar expr = Left $ unlines
   , "  " <> printTree expr
   ]
 
-typecheck :: Context -> Typing -> Either String Typing
+isSubtypeOf :: Type -> Type -> Bool
+isSubtypeOf t1 t2 =
+  case (t1, t2) of
+    _ | t1 == t2 -> True
+    (_, TopType) -> True
+    (BotType, _) -> True
+    (FunType a b, FunType c d) -> and
+      [ b `isSubtypeOf` d
+      , c `isSubtypeOf` a
+      ]
+    (RecordType fs1, RecordType fs2) -> and
+      [ case lookupFieldType l fs1 of
+          Just s  -> s `isSubtypeOf` t
+          Nothing -> False
+      | FieldType l t <- fs2
+      ]
+    (VariantType fs1, VariantType fs2) -> and
+      [ case lookupFieldType l fs2 of
+          Just s  -> s `isSubtypeOf` t
+          Nothing -> False
+      | FieldType l t <- fs1
+      ]
+    (ListType s, ListType t) ->
+      s `isSubtypeOf` t
+    (_, _) -> False
+
+typecheck
+  :: Context -> Typing -> Either String Typing
 typecheck context typing@(Typing expr expectedType) = do
   actualType <- typeOf context expr
-  if actualType == expectedType
+  if actualType `isSubtypeOf` expectedType
     then Right typing
     else typeMismatch typing actualType
 
@@ -156,14 +183,11 @@ typeOf context expr =
             Nothing      -> expectedField (Typing t ty) x
         _ -> expectedRecordType t ty
 
-    Variant l t tys -> do
+    -- <l : T>  isSubtypeOf  <l : T, l2 : T2, ...>
+    -- empty list has type "a list of Bot"
+    Variant l t -> do
       ty <- typeOf context t
-      case lookupFieldType l tys of
-        Nothing -> errorUnexpectedLabels [l] expr
-        Just ty'
-          | ty == ty' -> return ()
-          | otherwise -> typeMismatch (Typing t ty') ty
-      return (VariantType tys)
+      return (VariantType [FieldType l ty])
 
     Match t cases -> do
       ty <- typeOf context t
@@ -183,8 +207,12 @@ typeOf context expr =
                            (_, t1):(c, t2):_   -> typeMismatch (Typing c t2) t1
         _ -> expectedVariantType t ty
 
-    List ts ty -> do
-      mapM_ (\t -> typecheck context (Typing t ty)) ts
+    List [] -> do
+      return (ListType BotType)
+
+    List (t:ts) -> do
+      ty <- typeOf context t
+      mapM_ (\tt -> typecheck context (Typing tt ty)) ts
       return (ListType ty)
 
     ConsList t1 t2 -> do
@@ -198,7 +226,7 @@ typeOf context expr =
     Head t -> do
       typeOfList <- typeOf context t
       case typeOfList of
-        ListType ty -> return ty
+        ListType ty -> return (ListType ty)
         ty          -> expectedListType t ty
 
     Tail t -> do

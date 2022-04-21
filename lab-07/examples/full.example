@@ -1,0 +1,13 @@
+(fun (f : ({ a : Nat, c : [Nat] }) -> Nat) {
+  return f ({ a = succ 0, b = false, c = [] })
+})
+(fun (x : Top) {
+  return 0
+}) ;
+
+if true
+  then <x = 0> as <x : Nat>
+  else <y = false> as <y : Bool>
+  : <x : Nat, y : Bool> ;
+
+cons 0 []

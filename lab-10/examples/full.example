@@ -1,0 +1,29 @@
+
+
+// NatList = µ X . < n : {} , c : { h : Nat, t : X } >
+// NatBody = < n : {} , c : { h : Nat, t : µ X . < n : {} , c : { h : Nat, t : X } > } >
+
+let lengthOfNatList = fix
+  (fun (lengthOfNatList : (µ X . < n : {} , c : { h : Nat, t : X } >) -> Nat) { return
+  fun (list : µ X . < n : {} , c : { h : Nat, t : X } >) {
+    return match (unfold[µ X . < n : {} , c : { h : Nat, t : X } >] list) {
+      <n=unit> => 0 ;
+      <c=rec> => succ (lengthOfNatList rec.t)
+    }
+  }})
+in
+
+let fromList = fix (fun (fromList : [Nat] -> µ X . < n : {} , c : { h : Nat, t : X } >
+) {
+  return fun (list : [Nat]) {
+    return
+      if isempty list
+        then fold[µ X . < n : {} , c : { h : Nat, t : X } >]
+               (<n = {}> as < n : {} , c : { h : Nat, t : µ X . < n : {} , c : { h : Nat, t : X } > } >)
+        else fold[µ X . < n : {} , c : { h : Nat, t : X } >]
+               (<c = {h = head list, t = fromList (tail list)}> as < n : {} , c : { h : Nat, t : µ X . < n : {} , c : { h : Nat, t : X } > } >)
+
+  }
+})
+in lengthOfNatList (fromList ( [0 ; 0; succ 0] as [Nat] ))
+
