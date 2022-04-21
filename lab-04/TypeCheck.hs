@@ -198,7 +198,7 @@ typeOf context expr =
     Head t -> do
       typeOfList <- typeOf context t
       case typeOfList of
-        ListType ty -> return (ListType ty)
+        ListType ty -> return ty
         ty          -> expectedListType t ty
 
     Tail t -> do
