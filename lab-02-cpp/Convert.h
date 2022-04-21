@@ -1,4 +1,5 @@
 #pragma once
+
 #include <algorithm>
 #include <functional>
 #include <list>
@@ -8,6 +9,9 @@
 #include "Syntax/Normal/Absyn.H"
 
 namespace Convert {
+Nameless::Type *toNamelessType(Normal::Type *ty);
+Normal::Type *fromNamelessType(Nameless::Type *ty);
+
 std::function<Nameless::Expr *(Normal::Expr *)>
     toNameless(std::shared_ptr<std::list<Normal::Ident>>);
 
@@ -46,8 +50,8 @@ toNameless(std::shared_ptr<std::list<Normal::Ident>> vars) {
 
     if (auto var = dynamic_cast<Normal::Var *>(expr)) {
       int idx = 0;
-      for(auto el : *vars) {
-        if (var->ident_ == el){
+      for (auto el : *vars) {
+        if (var->ident_ == el) {
           return new Nameless::BoundVar(idx);
         }
         idx++;
@@ -56,9 +60,11 @@ toNameless(std::shared_ptr<std::list<Normal::Ident>> vars) {
     }
 
     if (auto abstraction = dynamic_cast<Normal::Abstraction *>(expr)) {
-      auto newVars = std::make_shared<std::list<Normal::Ident>>(vars->begin(), vars->end());
+      auto newVars = std::make_shared<std::list<Normal::Ident>>(vars->begin(),
+                                                                vars->end());
       newVars->push_front(abstraction->ident_);
-      return new Nameless::Abstraction(toNameless(newVars)(abstraction->expr_));
+      return new Nameless::Abstraction(toNamelessType(abstraction->type_),
+                                       toNameless(newVars)(abstraction->expr_));
     }
     if (auto application = dynamic_cast<Normal::Application *>(expr)) {
       return new Nameless::Application(go(application->expr_1),
@@ -73,6 +79,8 @@ toNameless(std::shared_ptr<std::list<Normal::Ident>> vars) {
 std::function<Normal::Expr *(Nameless::Expr *)>
 fromNameless(std::shared_ptr<std::list<Normal::Ident>> used);
 
+
+
 int var_start = 1;
 Normal::Ident pop_var() { return "x" + std::to_string(var_start++); }
 
@@ -83,8 +91,7 @@ public:
   Normal::Ident pop_var() { return "x" + std::to_string(_num++); }
 };
 
-Normal::Expr *
-fromNameless_(Nameless::Expr *expr) {
+Normal::Expr *fromNameless_(Nameless::Expr *expr) {
   var_start = 1;
   auto used = std::make_shared<std::list<Normal::Ident>>();
   return fromNameless(used)(expr);
@@ -134,7 +141,8 @@ fromNameless(std::shared_ptr<std::list<Normal::Ident>> used) {
       newUsed->push_front(z);
 
       return new Normal::Abstraction(
-          z, (fromNameless(newUsed)(abstraction->expr_)));
+          z, fromNamelessType(abstraction->type_),
+          (fromNameless(newUsed)(abstraction->expr_)));
     }
     if (auto applicaion = dynamic_cast<Nameless::Application *>(expr)) {
       return new Normal::Application(go(applicaion->expr_1),
@@ -145,4 +153,35 @@ fromNameless(std::shared_ptr<std::list<Normal::Ident>> used) {
   };
   return go;
 }
+
+Nameless::Type *toNamelessType(Normal::Type *ty) {
+  if (dynamic_cast<Normal::BoolType *>(ty)) {
+    return new Nameless::BoolType();
+  }
+  if (dynamic_cast<Normal::NatType *>(ty)) {
+    return new Nameless::NatType();
+  }
+  if (auto fun_type = dynamic_cast<Normal::FunType *>(ty)) {
+    return new Nameless::FunType(toNamelessType(fun_type->type_1),
+                                 toNamelessType(fun_type->type_2));
+  }
+
+  return nullptr;
+}
+
+Normal::Type *fromNamelessType(Nameless::Type *ty) {
+  if (dynamic_cast<Nameless::BoolType *>(ty)) {
+    return new Normal::BoolType();
+  }
+  if (dynamic_cast<Nameless::NatType *>(ty)) {
+    return new Normal::NatType();
+  }
+  if (auto fun_type = dynamic_cast<Nameless::FunType *>(ty)) {
+    return new Normal::FunType(fromNamelessType(fun_type->type_1),
+                               fromNamelessType(fun_type->type_2));
+  }
+
+  return nullptr;
+}
+
 } // namespace Convert

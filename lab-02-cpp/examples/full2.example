@@ -1,8 +1,0 @@
-((fun (f) {
-  return fun(x) {
-    return (f)((f)(x))
-  }
-}
-)
-(fun (n) { return succ n }))  // succ turned into a function
-(0) ;

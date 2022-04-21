@@ -22,11 +22,17 @@ int main() {
     if (auto exprs = dynamic_cast<Normal::ProgramExprs *>(prog)) {
       auto printTree = Normal::PrintAbsyn();
       std::for_each(exprs->listexpr_->begin(), exprs->listexpr_->end(),
-                    [&printTree](Normal::Expr *expr) {
-                      if (auto result = eval(expr)) {
-                        std::cout << printTree.print(result) << std::endl;
-                        delete result;
+                    [&printTree](Normal::Expr *typing) {
+                      auto result = typecheckAndEval(typing);
+                      try {
+                        auto expr = std::get<Normal::TypingStmt *>(result);
+                        std::cout << printTree.print(expr) << std::endl;
+                        delete expr;
                       }
+                      catch (const std::bad_variant_access &ex) {
+                        std::cout << "ERROR: " << std::get<std::string>(result);
+                      }
+                      std::cout << "\n";
                     });
     }
     delete prog;

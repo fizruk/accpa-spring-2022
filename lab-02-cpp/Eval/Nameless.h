@@ -113,7 +113,7 @@ std::function<Expr *(Expr *)> shiftFrom(int k) {
     }
 
     if (auto abstraction = dynamic_cast<Abstraction *>(expr)) {
-      return new Abstraction(shiftFrom(k + 1)(abstraction->expr_));
+      return new Abstraction(abstraction->type_, shiftFrom(k + 1)(abstraction->expr_));
     }
 
     if (auto application = dynamic_cast<Application *>(expr)) {
@@ -165,7 +165,7 @@ std::function<Expr *(Expr *)> substitute(int n, Expr *s) {
     }
 
     if (auto abstraction = dynamic_cast<Abstraction *>(expr)) {
-      return new Abstraction(substitute(n + 1, shift()(s))(abstraction->expr_));
+      return new Abstraction(abstraction->type_, substitute(n + 1, shift()(s))(abstraction->expr_));
     }
 
     if (auto application = dynamic_cast<Application *>(expr)) {

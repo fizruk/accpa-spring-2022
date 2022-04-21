@@ -1,9 +1,0 @@
-0 ;
-
-succ (succ 0) ;
-
-pred (succ (succ (succ 0))) ;
-
-iszero (succ (pred 0)) ;
-
-iszero (pred (succ 0))

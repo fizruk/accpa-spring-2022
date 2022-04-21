@@ -1,10 +1,12 @@
 #pragma once
 #include <list>
+#include <variant>
 
 #include "Convert.h"
 #include "Eval/Nameless.h"
 #include "Syntax/Nameless/Absyn.H"
 #include "Syntax/Normal/Absyn.H"
+#include "TypeCheck.h"
 
 namespace Normal {
 Expr *evalStep(Expr *expr) {
@@ -43,4 +45,15 @@ Normal::Expr *eval(Normal::Expr *expr) {
   }
 
   return res;
+}
+
+std::variant<std::string, Normal::TypingStmt*> typecheckAndEval(Normal::Expr* expr) {
+  auto map = std::map<Normal::Ident, Normal::Type*>();
+  auto ty = TypeCheck::typeOf(map, expr);
+  try {
+    return new Normal::TypingStmt(eval(expr), std::get<Normal::Type*>(ty));
+  }
+  catch (const std::bad_variant_access &ex) {
+    return std::get<std::string>(ty);
+  }
 }
