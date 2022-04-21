@@ -10,9 +10,9 @@ Each demonstration occurs over the course of one lab:
 - [Lab 4. Simple extensions: variants and lists.](lab-04/)
 - Lab 5. _Reserved for team projects._
 - [Lab 6. References.](lab-06/)
-- Lab 7. Subtyping.
+- [Lab 7. Subtyping.](lab-07/)
 - Lab 8. Imperative objects.
 - Lab 9. _Reserved for team projects._
-- Lab 10. Recursive types.
+- [Lab 10. Recursive types.](lab-10/)
 - Lab 10. Type reconstruction.
 - Lab 11. Hindley-Milner type system.
