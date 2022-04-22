@@ -1,0 +1,39 @@
+// identity on numbers
+fun (x : Nat) { return x } ;
+
+// identity applied to 0
+(fun (x : Nat) { return x })(0) ;
+
+// applying a function to an argument twice
+fun (f : Nat -> Nat) {
+  return fun(x : Nat) {
+    return f (f x)
+  }
+} ;
+
+// Type Error: type mismatch
+fun (f : Nat -> Bool) {
+  return fun(x : Nat) {
+    return f (f x)
+  }
+} ;
+
+// Successful typechecking example
+fun (f : Nat -> Bool) {
+  return fun(x : Nat) {
+    return f (if (f x) then succ 0 else 0)
+  }
+} ;
+
+// Type Error: expected function type
+fun (f : Nat -> Bool) {
+  return f 0 true
+} ;
+
+
+// Error: Undefined variable
+fun (f : Nat -> Bool -> Nat -> Bool) {
+  return fun(x : Nat) {
+    return f x y x
+  }
+}
