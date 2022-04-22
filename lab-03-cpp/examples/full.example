@@ -1,0 +1,27 @@
+fun (x : { a : Nat, b : Bool }) {
+  return
+    let y = { a = x.b, b = x }
+    in { z = y }
+} ;
+
+// Type Error: x is expected to have field c
+fun (x : { a : Nat, b : Bool }) {
+  return
+    let y = { a = x.c, b = x } in
+    { z = y }
+} ;
+
+// Type Error: x.b is not a record
+fun (x : { a : Nat, b : Bool }) {
+  return
+    let y = { a = x.b.a, b = x } in
+    { z = y }
+} ;
+
+// Type Error: x.b is expected to be Nat, not Bool
+fun (x : { a : Nat, b : Bool }) {
+  return
+    let f = fun (x : Nat) { return iszero x } in
+    let y = { a = f x.b, b = x } in
+    { z = y }
+} ;

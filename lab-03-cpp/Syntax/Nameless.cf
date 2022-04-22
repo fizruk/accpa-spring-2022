@@ -1,0 +1,47 @@
+comment "//" ;
+comment "/*" "*/" ;
+
+ProgramExprs.  Program ::= [Expr] ;
+
+separator Expr ";" ;
+
+If.           Expr ::= "if" Expr "then" Expr "else" Expr ;
+Let.          Expr ::= "let" Expr "in" Expr ;
+Abstraction.  Expr ::= "fun" "(" Type ")" "{" "return" Expr "}" ;
+Record.       Expr ::= "{" [BindingExpr] "}" ;
+
+Binding.      BindingExpr ::= Ident "=" Expr ;
+
+separator BindingExpr "," ;
+
+Application.  Expr1 ::= Expr1 Expr2 ;
+
+Succ.         Expr2 ::= "succ" Expr3 ;
+Dot.          Expr2 ::= Expr3 "." Ident ;
+Pred.         Expr2 ::= "pred" Expr3 ;
+IsZero.       Expr2 ::= "iszero" Expr3 ;
+
+ConstTrue.    Expr3 ::= "true" ;
+ConstFalse.   Expr3 ::= "false" ;
+ConstZero.    Expr3 ::= "0" ;
+FreeVar.      Expr3 ::= Ident ;
+BoundVar.     Expr3 ::= Integer ;
+
+_. Expr   ::= Expr1 ;
+_. Expr1  ::= Expr2 ;
+_. Expr2  ::= Expr3 ;
+_. Expr3  ::= "(" Expr ")" ;
+
+FunType.    Type ::= Type1 "->" Type ;
+RecordType. Type ::= "{" [FieldTypeExpr] "}" ;
+BoolType.   Type1 ::= "Bool" ;
+NatType.    Type1 ::= "Nat" ;
+
+FieldType.  FieldTypeExpr ::= Ident ":" Type ;
+
+separator FieldTypeExpr "," ;
+
+_.  Type  ::= Type1 ;
+_.  Type1 ::= "(" Type ")" ;
+
+TypingStmt.     Typing  ::= Expr ":" Type ;
